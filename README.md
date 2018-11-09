@@ -20,6 +20,15 @@ sudo apt-get install libusb-dev
 ~~~
 3. Call `make` to build the teensy_loader_cli
 
+## AVR Compiler
+
+1. MacOSX
+
+~~~
+brew tap osx-cross/avr
+brew install avr-gcc
+~~~
+
 ## Guides
 
 * [Teensy Guide](https://www.pjrc.com/teensy/td_download.html)
