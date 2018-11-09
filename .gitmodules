@@ -1,3 +1,6 @@
 [submodule "teensy_loader_cli"]
 	path = teensy_loader_cli
 	url = git@github.com:PaulStoffregen/teensy_loader_cli.git
+[submodule "teensy-template"]
+	path = teensy-template
+	url = git@github.com:apmorton/teensy-template.git
