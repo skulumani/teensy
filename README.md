@@ -36,3 +36,6 @@ brew install avr-gcc
 * [Teensyduino](https://www.pjrc.com/teensy/td_download.html)
 * [Teensy Core](https://github.com/PaulStoffregen/cores)
 * [Setup AVR](http://maxembedded.com/2015/06/setting-up-avr-gcc-toolchain-on-linux-and-mac-os-x/)
+* [Embedded AVR](http://maxembedded.com/2015/06/setting-up-avr-gcc-toolchain-on-linux-and-mac-os-x/)
+* [Arduino Makefile](https://github.com/sudar/Arduino-Makefile)
+* [PlatformIO](https://github.com/platformio/platformio-core/)
