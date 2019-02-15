@@ -1,23 +1,51 @@
+#!/bin/bash
 # download ARM compiler
 
 # ARM compiler downloaded from here
 # https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
 
-LINUX_URL="https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2?revision=d830f9dd-cd4f-406d-8672-cca9210dd220?product=GNU%20Arm%20Embedded%20Toolchain,64-bit,,Linux,8-2018-q4-major"
-MAC_URL="https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-mac.tar.bz2?revision=1041bf49-06d4-4174-866f-0e5259fa9d8d?product=GNU%20Arm%20Embedded%20Toolchain,64-bit,,Mac%20OS%20X,8-2018-q4-major"
+# TODO Instead automatically download and install arduino and teensyduino, then copy the tools over to this directory
 
-LINUX_HASH="f55f90d483ddb3bcf4dae5882c2094cd"
-MAC_HASH="4c0d86df0244df22bc783f83df886db9"
-
-
+WORK_DIR="$(pwd)"
+TEMP_DIR="$(mktemp -d)"
+INSTALL_DIR="$(pwd)/tools/compiler"
 
 # setup temp dir
+echo "This will download the ARM Toolchain and copy to tools/compiler"
+read -p "Press Enter to continue"
+
+if [[ ! "$TEMP_DIR" || ! -d "$TEMP_DIR" ]]; then
+    echo "Could not create temp dir"
+    exit 1
+fi
+
+function cleanup () {
+    rm -rf "$TEMP_DIR"
+    echo "Deleted temp working directory $TEMP_DIR"
+}
+
+trap cleanup exit
 
 # download ARM compiler
+echo "Downloading ARM tools"
+cd ${TEMP_DIR}
+mkdir gcc_arm
 
-# check hash and extract
+# logic for OS type
+wget ${LINUX_URL} -O ${TEMP_DIR}/gcc_arm.tar.bz2
+if ! echo "${LINUX_HASH} gcc_arm.tar.bz2" | md5sum -c; then
+    echo "Invalid hash! Aborting"
+    exit 1
+fi
+
+tar -xjf gcc_arm.tar.bz2 -C ./gcc_arm --strip-components=1
 
 # move to local directory
+echo "Now we'll copy the compiler to the local directory"
 
+cd ${WORK_DIR}
+cp -r ${TEMP_DIR}/gcc_arm/* ${INSTALL_DIR}
 
+echo "Finished"
 
+# build teensy_loader_cli

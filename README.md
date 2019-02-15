@@ -87,6 +87,14 @@ brew tap osx-cross/avr
 brew install avr-gcc
 ~~~
 
+For linux
+
+~~~
+sudo apt-get install gcc-arm-none-eabi
+~~~
+
+Or use the script to download the compiler directly instead
+
 ## MPU9250 libraries
 
 Two possible libraries for MPU9250. need to figure out which is best/most complete
