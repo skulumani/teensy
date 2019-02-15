@@ -74,6 +74,16 @@ brew tap osx-cross/avr
 brew install avr-gcc
 ~~~
 
+## MPU9250 libraries
+
+Two possible libraries for MPU9250. need to figure out which is best/most complete
+* [MPU9250](https://github.com/bolderflight/MPU9250)
+* [AHRS](https://github.com/kriswiner/MPU9250)
+* [Sparkfun](https://github.com/sparkfun/SparkFun_MPU-9250_Breakout_Arduino_Library)
+*
+* [Guide](https://learn.sparkfun.com/tutorials/mpu-9250-hookup-guide)
+* [IMU](http://x-io.co.uk/open-source-imu-and-ahrs-algorithms/)
+
 ## Guides
 
 * [Teensy Guide](https://www.pjrc.com/teensy/td_download.html)
