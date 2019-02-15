@@ -37,11 +37,14 @@ chmod +x TeensyduinoInstall.linux64
 
 6. Now can use Arduino to verify and upload sketches once a sketch is already running
 
-We just need Teensyduino so we can copy the files located
+## Removing Ardunio IDE
 
-`<ARDUINOPATH>/hardware/tools` and `<ARDUINOPATH>/hardware/tools/arm/bin`
+To avoid We just need Teensyduino so we can copy the files located
 
-to the local `./tools` directory.
+* `<ARDUINOPATH>/hardware/tools/arm` goes to `<prj>/tools/compiler`
+* `<ARDUINOPATH>/hardware/tools/<executable >` goes to `<prj>/tools`
+* `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy` 
+
 
 ## Teensy Loader Command Line 
 
@@ -77,23 +80,6 @@ teensy_loader_cli --mcu=mk64fx512 -w <name of nex>.hex
 ~~~
 
 ## Example [makefile](https://github.com/PaulStoffregen/cores/blob/master/teensy3/Makefile)
-
-## AVR Compiler
-
-1. MacOSX
-
-~~~
-brew tap osx-cross/avr
-brew install avr-gcc
-~~~
-
-For linux
-
-~~~
-sudo apt-get install gcc-arm-none-eabi
-~~~
-
-Or use the script to download the compiler directly instead
 
 ## MPU9250 libraries
 
