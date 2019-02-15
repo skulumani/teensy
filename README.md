@@ -1,4 +1,4 @@
-## Setup instructions
+## Setup instructions for using Arduino IDE
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/Main/Software)
 2. Run Arduino software 
@@ -18,7 +18,21 @@
 brew install libusb-compat
 sudo apt-get install libusb-dev
 ~~~
+
+3. Copy the udev rule on linux
+
+~~~
+sudo cp tools/49-teensy.rules /etc/udev/rules.d
+~~~
+
+Then unplug and plug in the teensy
+
 3. Call `make` to build the teensy_loader_cli
+
+~~~
+cd teensy_loader_cli
+make
+~~~
 
 ## AVR Compiler
 
