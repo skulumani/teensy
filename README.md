@@ -45,7 +45,6 @@ To avoid We just need Teensyduino so we can copy the files located
 * `<ARDUINOPATH>/hardware/tools/<executable >` goes to `<prj>/tools`
 * `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy` 
 
-
 ## Teensy Loader Command Line 
 
 * [Source](https://www.pjrc.com/teensy/loader_cli.html) and a submodule

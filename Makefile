@@ -39,7 +39,7 @@ endif
 COREPATH = teensy3
 
 # path location for Arduino libraries
-LIBRARYPATH = libraries
+LIBRARYPATH = lib
 
 # path location for the arm-none-eabi compiler
 COMPILERPATH = $(TOOLSPATH)/compiler/bin
