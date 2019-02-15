@@ -1,11 +1,32 @@
 ## Setup instructions for using Arduino IDE
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/Main/Software)
+
+Download, extract and run `./install.sh`
+
+This will just install arduino and setup links to the current directory. 
+
+So you should put it someplace useful
+
 2. Run Arduino software 
+
 3. Download and install [Teensyduino](https://www.pjrc.com/teensy/td_download.html)
+
+You'll download a file and need to set the executable bit 
+
+~~~
+chmod +x TeensyduinoInstall.linux64
+~~~
+
 4. Run Arduino and select Teensy 3.5 from Tools > Board
+
 5. Open a sketch and upload such as File > Examples > Digital > Blink LED
+
 6. Now can use Arduino to verify and upload sketches once a sketch is already running
+
+We just need Teensyduino so we can copy the `<ARDUINOPATH>/hardware/tools` path
+
+`<ARDUINOPATH>/hardware/tools/arm/bin`
 
 ## Teensy Loader Command Line 
 
@@ -33,6 +54,14 @@ Then unplug and plug in the teensy
 cd teensy_loader_cli
 make
 ~~~
+
+4. Upload a compiled hex file
+
+~~~
+teensy_loader_cli --mcu=mk64fx512 -w <name of nex>.hex
+~~~
+
+## Example [makefile](https://github.com/PaulStoffregen/cores/blob/master/teensy3/Makefile)
 
 ## AVR Compiler
 
