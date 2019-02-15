@@ -1,3 +1,16 @@
+# Teensy
+
+Instructions are here for both using the Arduino IDE or make and the AVR toolchain.
+
+## TODO
+
+* Update teensy3 library and tools from the Arduino installation
+* Add more examples
+* Script to download ARM compiler tools from website
+* Get teensy core code as a submodule
+* Use makefile example to build simple setup script and use teensy_loader_cli to push to board
+* Get MPU9250 library installed and working
+
 ## Setup instructions for using Arduino IDE
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/Main/Software)
