@@ -24,9 +24,11 @@ chmod +x TeensyduinoInstall.linux64
 
 6. Now can use Arduino to verify and upload sketches once a sketch is already running
 
-We just need Teensyduino so we can copy the `<ARDUINOPATH>/hardware/tools` path
+We just need Teensyduino so we can copy the files located
 
-`<ARDUINOPATH>/hardware/tools/arm/bin`
+`<ARDUINOPATH>/hardware/tools` and `<ARDUINOPATH>/hardware/tools/arm/bin`
+
+to the local `./tools` directory.
 
 ## Teensy Loader Command Line 
 

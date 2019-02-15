@@ -20,7 +20,8 @@
  parsing functions based on TextFinder library by Michael Margolis
  */
 
-#include <Arduino.h>
+#include "Arduino.h"
+#include "Stream.h"
 
 #define PARSE_TIMEOUT 1000  // default number of milli-seconds to wait
 #define NO_SKIP_CHAR  1  // a magic char not found in a valid ASCII numeric field
@@ -175,7 +176,7 @@ float Stream::parseFloat(char skipChar){
   boolean isNegative = false;
   boolean isFraction = false;
   long value = 0;
-  int c;
+  char c;
   float fraction = 1.0;
 
   c = peekNextDigit();
@@ -255,7 +256,7 @@ size_t Stream::readBytesUntil(char terminator, char *buffer, size_t length)
 String Stream::readString(size_t max)
 {
 	String str;
-	size_t length = 0;
+	size_t length = str.length();
 	while (length < max) {
 		int c = timedRead();
 		if (c < 0) {
@@ -264,7 +265,6 @@ String Stream::readString(size_t max)
 		}
 		if (c == 0) break;
 		str += (char)c;
-		length++;
 	}
 	return str;
 }
@@ -272,7 +272,7 @@ String Stream::readString(size_t max)
 String Stream::readStringUntil(char terminator, size_t max)
 {
 	String str;
-	size_t length = 0;
+	size_t length = str.length();
 	while (length < max) {
 		int c = timedRead();
 		if (c < 0) {
@@ -281,7 +281,32 @@ String Stream::readStringUntil(char terminator, size_t max)
 		}
 		if (c == 0 || c == terminator) break;
 		str += (char)c;
-		length++;
 	}
 	return str;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

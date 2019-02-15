@@ -1,5 +1,3 @@
-// This header file is in the public domain.
-
 #ifndef _AVR_WDT_H_
 #define _AVR_WDT_H_
 
