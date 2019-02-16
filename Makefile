@@ -42,7 +42,7 @@ COREPATH = teensy3
 LIBRARYPATH = lib
 
 # path location for the arm-none-eabi compiler
-COMPILERPATH = $(TOOLSPATH)/compiler/bin
+COMPILERPATH = $(TOOLSPATH)/arm/bin
 
 #************************************************************************
 # Settings below this point usually do not need to be edited
