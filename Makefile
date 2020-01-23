@@ -157,6 +157,11 @@ $(TARGET).elf: $(OBJS) $(LDSCRIPT)
 	@$(SIZE) "$<"
 	@$(OBJCOPY) -O ihex -R .eeprom "$<" "$@"
 
+blink: src/blink.cpp $(LDSCRIPT) $(TCPP_FILES)
+	# elf
+	@echo -e "[LD]\t$@"
+	@$(CC) $(LDFLAGS) -o "$@" src/blink.cpp $(TCPP_FILES) $(LIBS)
+		
 # compiler generated dependency info
 -include $(OBJS:.o=.d)
 
