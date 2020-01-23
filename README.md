@@ -99,6 +99,7 @@ Two possible libraries for MPU9250. need to figure out which is best/most comple
 
 ## Guides
 
+* [Makefile manual](http://www.gnu.org/software/make/manual/make.html#Reading)
 * [Makefile Guide](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)
 * [Teensy Guide](https://www.pjrc.com/teensy/td_download.html)
 * [Teensy Template](https://github.com/apmorton/teensy-template)

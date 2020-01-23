@@ -1,5 +1,6 @@
 # The name of your project (used to name the compiled .hex file)
-TARGET = $(notdir $(CURDIR))
+# TARGET = $(notdir $(CURDIR))
+TARGET = blink_official
 
 # The teensy version to use, 30, 31, 35, 36, or LC
 TEENSY = 35
@@ -157,11 +158,25 @@ $(TARGET).elf: $(OBJS) $(LDSCRIPT)
 	@$(SIZE) "$<"
 	@$(OBJCOPY) -O ihex -R .eeprom "$<" "$@"
 
-blink: src/blink.cpp $(LDSCRIPT) $(TCPP_FILES)
+blink: src/blink.cpp
+	# build object files
+	@echo -e "[CXX]\t$<"
+	@mkdir -p "build"
+	# objs ldscript
+	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(L_INC) -o build/blink -c src/blink.cpp
+	# CC stuff
+	
 	# elf
-	@echo -e "[LD]\t$@"
-	@$(CC) $(LDFLAGS) -o "$@" src/blink.cpp $(TCPP_FILES) $(LIBS)
-		
+	# @echo -e "[LD]\t$@"
+	# @$(CC) $(LDFLAGS) -o build/blink.elf build/blink $(LIBS)
+	# # hex
+	# @echo -e "[HEX]\t$@"
+	# @$(SIZE) build/blink.elf
+	# @$(OBJCOPY) -O ihex -R .eeprom build/blink.elf build/blink.hex
+	# # post compile
+	# @$(abspath $(TOOLSPATH))/teensy_post_compile -file=blink -path=build -tools="$(abspath $(TOOLSPATH))"
+	# @-$(abspath $(TOOLSPATH))/teensy_reboot
+
 # compiler generated dependency info
 -include $(OBJS:.o=.d)
 
