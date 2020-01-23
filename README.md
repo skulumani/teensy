@@ -74,6 +74,7 @@ Then unplug and plug in the teensy
 3. Call `make` to build the teensy_loader_cli
 
 ~~~
+sudo apt-get install libusb-dev
 cd teensy_loader_cli
 make
 ~~~
@@ -81,7 +82,7 @@ make
 4. Upload a compiled hex file
 
 ~~~
-teensy_loader_cli --mcu=mk64fx512 -w <name of nex>.hex
+teensy_loader_cli --mcu=TEENSY35 -w <name of nex>.hex
 ~~~
 
 ## Example [makefile](https://github.com/PaulStoffregen/cores/blob/master/teensy3/Makefile)
@@ -98,6 +99,7 @@ Two possible libraries for MPU9250. need to figure out which is best/most comple
 
 ## Guides
 
+* [Makefile Guide](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)
 * [Teensy Guide](https://www.pjrc.com/teensy/td_download.html)
 * [Teensy Template](https://github.com/apmorton/teensy-template)
 * [Teensyduino](https://www.pjrc.com/teensy/td_download.html)
