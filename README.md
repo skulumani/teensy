@@ -31,6 +31,12 @@ You'll download a file and need to set the executable bit
 chmod +x TeensyduinoInstall.linux64
 ~~~
 
+Install the udev rule
+
+~~~
+sudo cp ./49-teensy.rules /etc/udev/rules.d/
+~~~
+
 4. Run Arduino and select Teensy 3.5 from Tools > Board
 
 5. Open a sketch and upload such as File > Examples > Digital > Blink LED
