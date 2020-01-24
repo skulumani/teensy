@@ -47,7 +47,7 @@ sudo cp ./49-teensy.rules /etc/udev/rules.d/
 
 To avoid We just need Teensyduino so we can copy the files located
 
-* `<ARDUINOPATH>/hardware/tools/arm` goes to `<prj>/tools/compiler`
+* `<ARDUINOPATH>/hardware/tools/arm` goes to `<prj>/tools`
 * `<ARDUINOPATH>/hardware/tools/<executable >` goes to `<prj>/tools`
 * `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy` 
 

@@ -105,8 +105,8 @@ OBJCOPY = $(abspath $(COMPILERPATH))/arm-none-eabi-objcopy
 SIZE = $(abspath $(COMPILERPATH))/arm-none-eabi-size
 
 # automatically create lists of the sources and objects
-LC_FILES := $(wildcard $(LIBRARYPATH)/*/*.c)
-LCPP_FILES := $(wildcard $(LIBRARYPATH)/*/*.cpp)
+LC_FILES := $(wildcard $(LIBRARYPATH)/*/*.c) $(wildcard $(LIBRARYPATH)/*/src/*.c)
+LCPP_FILES := $(wildcard $(LIBRARYPATH)/*/*.cpp) $(wildcard $(LIBRARYPATH)/*/src/*.cpp)
 TC_FILES := $(wildcard $(COREPATH)/*.c)
 TCPP_FILES := $(wildcard $(COREPATH)/*.cpp)
 C_FILES := $(wildcard src/*.c)
@@ -114,7 +114,7 @@ CPP_FILES := $(wildcard src/*.cpp)
 INO_FILES := $(wildcard src/*.ino)
 
 # include paths for libraries
-L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/)), -I$(lib))
+L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/) $(wildcard $(LIBRARYPATH)/*/src/)), -I$(lib))
 
 SOURCES := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o) $(INO_FILES:.ino=.o) $(TC_FILES:.c=.o) $(TCPP_FILES:.cpp=.o) $(LC_FILES:.c=.o) $(LCPP_FILES:.cpp=.o)
 OBJS := $(foreach src,$(SOURCES), $(BUILDDIR)/$(src))
