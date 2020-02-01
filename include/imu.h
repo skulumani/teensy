@@ -1,5 +1,7 @@
 #ifndef IMU_H
 #define IMU_H
+
+#include "Arduino.h"
 #include "MPU9250.h"
 
 int setup_imu(MPU9250& IMU);
