@@ -4,7 +4,9 @@
 
 /* extern "C" int main(void) */
 int main(void) {
-    MPU9250 IMU(Wire,0x68);
+    /* MPU9250 IMU(Wire,0x68); */
+    MPU9250 IMU(SPI, 10);
+
     int imu_status = setup_imu(IMU);
 
 	pinMode(13, OUTPUT);

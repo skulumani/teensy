@@ -46,3 +46,53 @@ int read_imu(MPU9250& IMU) {
 
     return 0;
 }
+
+int calibrate_imu(MPU9250& IMU) {
+    // calibrate gyro
+    Serial.println("Starting Gyro Calibration");
+    Serial.println("Remain stationary!");
+    delay(5000);
+    IMU.calibrateGyro();
+
+    Serial.println("Finished Gyro Calibration");
+
+    // calibrate accel
+    Serial.println("Starting Accel Calibration");
+    Serial.println("Rotate IMU to all six orientations");
+    
+    Serial.println("X+ down");
+    delay(5000);
+    IMU.calibrateAccel();
+
+    Serial.println("X- down");
+    delay(5000);
+    IMU.calibrateAccel();
+
+    Serial.println("Y+ down");
+    delay(5000);
+    IMU.calibrateAccel();
+
+    Serial.println("Y- down");
+    delay(5000);
+    IMU.calibrateAccel();
+    
+    Serial.println("Z+ down");
+    delay(5000);
+    IMU.calibrateAccel();
+
+    Serial.println("Z- down");
+    delay(5000);
+    IMU.calibrateAccel();
+
+    Serial.println("Finished Accel Calibration");
+    // calibrate mag
+    Serial.println("Starting Mag Calibration");
+    delay(5000);
+    IMU.calibrateMag();
+    Serial.println("Finished Mag Calibration");
+
+    // read the calibration values and save to the SD card/print out
+    float val;
+    
+    Serial.println("Finished Calibration");
+}

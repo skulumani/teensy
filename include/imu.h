@@ -5,4 +5,6 @@
 int setup_imu(MPU9250& IMU);
 int read_imu(MPU9250& IMU);
 
+int calibrate_imu(MPU9250& IMU);
+
 #endif
