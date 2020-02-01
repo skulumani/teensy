@@ -118,7 +118,9 @@ INO_FILES := $(wildcard src/*.ino)
 # include paths for libraries
 L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/) $(wildcard $(LIBRARYPATH)/*/src/)), -I$(lib))
 
+# substitutes endings to give  a big list of sources
 SOURCES := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o) $(INO_FILES:.ino=.o) $(TC_FILES:.c=.o) $(TCPP_FILES:.cpp=.o) $(LC_FILES:.c=.o) $(LCPP_FILES:.cpp=.o)
+# gets all the OBJ files in the build directory
 OBJS := $(foreach src,$(SOURCES), $(BUILDDIR)/$(src))
 
 all: hex
@@ -150,10 +152,12 @@ $(BUILDDIR)/%.o: %.ino
 	@mkdir -p "$(dir $@)"
 	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(L_INC) -o "$@" -x c++ -include Arduino.h -c "$<"
 
+# depends on right side
 $(TARGET).elf: $(OBJS) $(LDSCRIPT)
 	@echo -e "[LD]\t$@"
 	@$(CC) $(LDFLAGS) -o "$@" $(OBJS) $(LIBS)
 
+# converts all elf to hex - need this
 %.hex: %.elf
 	@echo -e "[HEX]\t$@"
 	@$(SIZE) "$<"
@@ -166,3 +170,10 @@ clean:
 	@echo Cleaning...
 	@rm -rf "$(BUILDDIR)"
 	@rm -f "$(TARGET).elf" "$(TARGET).hex"
+
+mpu_example: src/main.cpp
+	@echo Starting....
+	$(info $$OBJS is [${OBJS}])
+# hex, elf, o in reverse order
+# build object files
+# $(CXX) $(CPPFLAGS) $(CPPFLAGS) $(L_INC) -o "$@" -c "$<"
