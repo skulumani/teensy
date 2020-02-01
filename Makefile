@@ -37,7 +37,8 @@ TOOLSPATH = /Applications/Arduino.app/Contents/Java/hardware/tools
 # endif
 
 # path location for Teensy 3 core
-COREPATH = /Applications/Arudino.app/Contents/Java/hardware/teensy/avr/cores/teensy3
+# COREPATH = /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3
+COREPATH = teensy3
 
 # path location for Arduino libraries
 LIBRARYPATH = lib
