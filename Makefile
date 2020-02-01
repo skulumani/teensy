@@ -5,7 +5,7 @@ TARGET = $(notdir $(CURDIR))
 TEENSY = 35
 
 # Set to 24000000, 48000000, or 96000000 to set CPU core speed
-TEENSY_CORE_SPEED = 48000000
+TEENSY_CORE_SPEED = 120000000
 
 # Some libraries will require this to be defined
 # If you define this, you will break the default main.cpp
@@ -24,7 +24,8 @@ BUILDDIR = $(abspath $(CURDIR)/build)
 #************************************************************************
 
 # path location for Teensy Loader, teensy_post_compile and teensy_reboot
-TOOLSPATH = $(CURDIR)/tools
+# TOOLSPATH = $(CURDIR)/tools
+TOOLSPATH = /Applications/Arduino.app/Contents/Java/hardware/tools
 
 # ifeq ($(OS),Windows_NT)
 #     $(error What is Win Dose?)
@@ -36,7 +37,7 @@ TOOLSPATH = $(CURDIR)/tools
 # endif
 
 # path location for Teensy 3 core
-COREPATH = teensy3
+COREPATH = /Applications/Arudino.app/Contents/Java/hardware/teensy/avr/cores/teensy3
 
 # path location for Arduino libraries
 LIBRARYPATH = lib

@@ -49,7 +49,7 @@ To avoid We just need Teensyduino so we can copy the files located
 
 * `<ARDUINOPATH>/hardware/tools/arm` goes to `<prj>/tools`
 * `<ARDUINOPATH>/hardware/tools/<executable >` goes to `<prj>/tools`
-* `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy` 
+* `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy3` 
 
 ## Teensy Loader Command Line 
 
@@ -106,3 +106,9 @@ Two possible libraries for MPU9250. need to figure out which is best/most comple
 * [Embedded AVR](http://maxembedded.com/2015/06/setting-up-avr-gcc-toolchain-on-linux-and-mac-os-x/)
 * [Arduino Makefile](https://github.com/sudar/Arduino-Makefile)
 * [PlatformIO](https://github.com/platformio/platformio-core/)
+
+### CMake examples
+
+https://github.com/drichelson/teensy-cmake
+
+https://github.com/xya/teensy-cmake
