@@ -116,7 +116,7 @@ CPP_FILES := $(wildcard src/*.cpp)
 INO_FILES := $(wildcard src/*.ino)
 
 # include paths for libraries
-L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/) $(wildcard $(LIBRARYPATH)/*/src/)), -I$(lib))
+L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/) $(wildcard $(LIBRARYPATH)/*/src/) $(wildcard include/)), -I$(lib))
 
 # substitutes endings to give  a big list of sources
 SOURCES := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o) $(INO_FILES:.ino=.o) $(TC_FILES:.c=.o) $(TCPP_FILES:.cpp=.o) $(LC_FILES:.c=.o) $(LCPP_FILES:.cpp=.o)
