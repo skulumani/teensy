@@ -4,32 +4,38 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 
 ## TODO
 
-* Update teensy3 library and tools from the Arduino installation
-* Add more examples
-* Script to download ARM compiler tools from website
-* Get teensy core code as a submodule
+[x] Update teensy3 library and tools from the Arduino installation
+~~* Add more examples~~
+~~* Script to download ARM compiler tools from website~~
+~~* Get teensy core code as a submodule~~
 * Use makefile example to build simple setup script and use teensy_loader_cli to push to board
-* Get MPU9250 library installed and working
+[x] Get MPU9250 library installed and working
+[ ] Fix MPU9250.h to initialize the bias/scale factor variables (around line 169)
+[ ] Calibrate IMU 
+[ ] Create IMU wrapper class to interface with MPU9250 and rotate outputs to match breakboard diagram
+[ ] Test code to read at 1000Hz
+[ ] AHRS
 
-## SPI Wiring
+## SPI Wiring for MPU 9250
 
 Numbers correspond to pin out diagram - NOT location on board
 
 * SCK - Clock pin 13 
 * MOSI - pin 11
 * MISO - pin 12
-* SS - default is usually pin 10 but you can select any pin.
+* SS - default is usually pin 10 but you can select any digital IO pin
 
 Connecting to 9250
 
-* NCS => SS
-* MOSI => SDA
-* MISO => ADO
-* SCK => SCL
-* VCC => 3.3V Pin 3
-* GND => GND 
+* NCS => SS Pin 10
+* SDA -> MOSI  pin 11
+* ADO -> MISO pin 12
+* SCL -> SCK pin 13
+* VCC -> 3.3V Pin 3
+* GND -> GND 
 
-    VDD: this should be a 2.4V to 3.6V power source.
+9250 Pins
+VDD: this should be a 2.4V to 3.6V power source.
 GND: ground.
 VDDI: digital I/O supply voltage. This should be between 1.71V and VDD.
 FSYNC: not used, should be grounded.

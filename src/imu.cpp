@@ -20,9 +20,9 @@ int setup_imu(MPU9250& IMU) {
     }
 
     // set calibration
-    IMU.setAccelCalX(0, 1);
-    IMU.setAccelCalY(0, 1);
-    IMU.setAccelCalZ(0, 1);
+    /* IMU.setAccelCalX(0, 1); */
+    /* IMU.setAccelCalY(0, 1); */
+    /* IMU.setAccelCalZ(0, 1); */
 
     return status;
 }
