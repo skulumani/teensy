@@ -11,6 +11,26 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 * Use makefile example to build simple setup script and use teensy_loader_cli to push to board
 * Get MPU9250 library installed and working
 
+## SPI Wiring
+
+Numbers correspond to pin out diagram - NOT location on board
+
+* SCK - Clock pin 13 
+* MOSI - pin 11
+* MISO - pin 12
+* SS - default is usually pin 10 but you can select any pin.
+
+Connecting to 9250
+
+* NCS => SS
+* MOSI => SDA
+* MISO => ADO
+* SCK => SCL
+* VCC => 3.3V Pin 3
+* GND => GND 
+
+* [SPI Library](https://www.pjrc.com/teensy/td_libs_SPI.html)
+
 ## Setup instructions for using Arduino IDE
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/Main/Software)
@@ -85,6 +105,10 @@ teensy_loader_cli --mcu=mk64fx512 -w <name of nex>.hex
 ~~~
 
 ## Example [makefile](https://github.com/PaulStoffregen/cores/blob/master/teensy3/Makefile)
+
+## Libraries
+
+* [SD Card](https://github.com/greiman/SdFat-beta)
 
 ## MPU9250 libraries
 
