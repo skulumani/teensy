@@ -29,6 +29,18 @@ Connecting to 9250
 * VCC => 3.3V Pin 3
 * GND => GND 
 
+    VDD: this should be a 2.4V to 3.6V power source.
+GND: ground.
+VDDI: digital I/O supply voltage. This should be between 1.71V and VDD.
+FSYNC: not used, should be grounded.
+INT: (optional) used for the interrupt output setup in enableDataReadyInterrupt and enableWakeOnMotion. Connect to interruptable pin on microcontroller.
+SDA / SDI: connect to MOSI.
+SCL / SCLK: connect to SCK.
+AD0 / SDO: connect to MISO.
+nCS: connect to chip select pin. Pin 10 was used in the code snippets in this document and the included examples, but any digital I/O pin can be used.
+AUXDA: not used.
+AUXCL: not used.
+
 * [SPI Library](https://www.pjrc.com/teensy/td_libs_SPI.html)
 
 ## Setup instructions for using Arduino IDE
