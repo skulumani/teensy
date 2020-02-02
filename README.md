@@ -4,17 +4,17 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 
 ## TODO
 
-[x] Update teensy3 library and tools from the Arduino installation
-~~* Add more examples~~
-~~* Script to download ARM compiler tools from website~~
-~~* Get teensy core code as a submodule~~
+* [x] Update teensy3 library and tools from the Arduino installation
+* ~~* Add more examples~~
+* ~~* Script to download ARM compiler tools from website~~
+* ~~* Get teensy core code as a submodule~~
 * Use makefile example to build simple setup script and use teensy_loader_cli to push to board
-[x] Get MPU9250 library installed and working
-[ ] Fix MPU9250.h to initialize the bias/scale factor variables (around line 169)
-[ ] Calibrate IMU 
-[ ] Create IMU wrapper class to interface with MPU9250 and rotate outputs to match breakboard diagram
-[ ] Test code to read at 1000Hz
-[ ] AHRS
+* [x] Get MPU9250 library installed and working
+* [ ] Fix MPU9250.h to initialize the bias/scale factor variables (around line 169)
+* [ ] Calibrate IMU 
+* [ ] Create IMU wrapper class to interface with MPU9250 and rotate outputs to match breakboard diagram
+* [ ] Test code to read at 1000Hz
+* [ ] AHRS
 
 ## SPI Wiring for MPU 9250
 
@@ -35,6 +35,8 @@ Connecting to 9250
 * GND -> GND 
 
 9250 Pins
+
+~~~
 VDD: this should be a 2.4V to 3.6V power source.
 GND: ground.
 VDDI: digital I/O supply voltage. This should be between 1.71V and VDD.
@@ -46,6 +48,7 @@ AD0 / SDO: connect to MISO.
 nCS: connect to chip select pin. Pin 10 was used in the code snippets in this document and the included examples, but any digital I/O pin can be used.
 AUXDA: not used.
 AUXCL: not used.
+~~~
 
 * [SPI Library](https://www.pjrc.com/teensy/td_libs_SPI.html)
 
