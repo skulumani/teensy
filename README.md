@@ -165,3 +165,13 @@ https://github.com/xya/teensy-cmake
 * https://teslabs.com/articles/magnetometer-calibration/
 * https://ieeexplore.ieee.org/document/6289882
 * https://www.vectornav.com/docs/default-source/documentation/vn-100-documentation/AN012.pdf?sfvrsn=c99fe6b9_15
+
+## NanoPB/Protocol Buffers
+
+Uses [nanopb](https://jpa.kapsi.fi/nanopb/)
+
+1. Download the latest release
+2. Copy the `generator-bin` directory to `tools`
+3. Use `./tools/generator-bin/protoc --nanopb_out=. simple.proto` to compile the proto message
+4. Copy the new message definition files to `src` or `include`
+5. Update the following files if desired: `pb.h`, `pb_common.h`, `pb_encode.h`, `pb_decode.h`, `pb_common.c`, `pb_encode.c`, `pb_decode.c`
