@@ -5,19 +5,65 @@
 #include "eigen_teensy.h"
 #include "utility.h"
 
+#include "simple.pb.h"
+#include "pb_common.h"
+#include "pb.h"
+#include "pb_encode.h"
+#include "pb_decode.h"
+
 /* extern "C" int main(void) */
 int main(void) {
 
     AHRS::IMU imu;
 
     /* setup_led(); */
-    // always need a loop 
+    
+    uint8_t buffer[128];
+    size_t message_length;
+    bool status;
+
+    // encode the message
+    SimpleMessage message = SimpleMessage_init_zero;
+    
+    // stream which will write to the buffer
+    pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
+
+    // fill in message
+    message.lucky_number = 13;
+    
+    // encode message
+    status = pb_encode(&stream, SimpleMessage_fields, &message);
+    message_length = stream.bytes_written;
+
+    if (!status) {
+        Serial.print("Error: ");
+        Serial.println(PB_GET_ERROR(&stream));
+        while(1) {}
+    }
+
+    // now send message over serial and then decode
+    {
+    // decode message
+    SimpleMessage message = SimpleMessage_init_zero;
+    pb_istream_t stream = pb_istream_from_buffer(buffer, message_length);
+    status = pb_decode(&stream, SimpleMessage_fields, &message);
+
+    if (!status) {
+        Serial.print("Error: ");
+        Serial.println(PB_GET_ERROR(&stream));
+        while(1) {}
+    }
+
+    Serial.println((int)message.lucky_number);
+    }
+
+    // loop forever
 	while (1) {
         /* read_imu(IMU); */
         /* Serial.println("Working"); */
         /* blink_led(); */
-        imu.output_serial();
-        delay(100);
+        /* imu.output_serial(); */
+        /* delay(100); */
 	}
 }
 
