@@ -157,3 +157,10 @@ Two possible libraries for MPU9250. need to figure out which is best/most comple
 https://github.com/drichelson/teensy-cmake
 
 https://github.com/xya/teensy-cmake
+
+## Magnetometer Calibration
+
+* https://ieeexplore.ieee.org/document/1290055
+* https://teslabs.com/articles/magnetometer-calibration/
+* https://ieeexplore.ieee.org/document/6289882
+* https://www.vectornav.com/docs/default-source/documentation/vn-100-documentation/AN012.pdf?sfvrsn=c99fe6b9_15
