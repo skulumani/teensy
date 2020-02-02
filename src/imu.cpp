@@ -111,3 +111,62 @@ int calibrate_imu(MPU9250& IMU) {
     
     Serial.println("Finished Calibration");
 }
+
+
+namespace AHRS {
+    
+    void IMU::setup_serial( void ) {
+        Serial.begin(115200);
+        Serial.println("Starting IMU Serial outputs");
+
+        while(!Serial) {}
+
+        status = this->begin();
+
+        if (status < 0) {
+            Serial.println("IMU Initialization unsuccessful");
+            Serial.println("Check IMU wiring or power cycle");
+            Serial.print("Status: ");
+            Serial.println(status);
+            while(1) {};
+        }
+    }
+
+    void IMU::output_serial( void ) {
+
+        this->readSensor();
+
+        // display the data
+        Serial.print(this->getAccelX_mss(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getAccelY_mss(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getAccelZ_mss(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getGyroX_rads(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getGyroY_rads(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getGyroZ_rads(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getMagX_uT(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getMagY_uT(),6);
+        Serial.print("\t");
+
+        Serial.print(this->getMagZ_uT(),6);
+        Serial.print("\t");
+
+        Serial.println(this->getTemperature_C(),6);
+
+    }
+
+
+}
