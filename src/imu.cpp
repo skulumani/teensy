@@ -167,6 +167,9 @@ namespace AHRS {
         Serial.println(this->getTemperature_C(),6);
 
     }
+    
+    void IMU::calibrate( void ) {
 
+    }
 
 }

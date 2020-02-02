@@ -30,6 +30,8 @@ namespace AHRS {
 
             void output_serial( void );
 
+            void calibrate( void );
+
     };
 }
 #endif
