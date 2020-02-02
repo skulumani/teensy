@@ -161,6 +161,7 @@ https://github.com/xya/teensy-cmake
 ## Magnetometer Calibration
 
 * https://ieeexplore.ieee.org/document/1290055
+* https://www.hindawi.com/journals/js/2010/967245/#B11
 * https://teslabs.com/articles/magnetometer-calibration/
 * https://ieeexplore.ieee.org/document/6289882
 * https://www.vectornav.com/docs/default-source/documentation/vn-100-documentation/AN012.pdf?sfvrsn=c99fe6b9_15
