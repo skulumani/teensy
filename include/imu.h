@@ -17,15 +17,18 @@ int calibrate_imu(MPU9250& IMU);
 int setup_imu(MPU9250 &IMU);
 
 namespace AHRS {
-    class IMU : public MPU9250 {
+    class IMU {
         private:
             int status;
             void setup_serial( void );
+            MPU9250 imu = MPU9250(SPI, 10);
+            /* MPU9250 imu = MPU9250(Wire, 0x68); */
 
         public:
-            IMU(SPIClass &bus, uint8_t csPin) : MPU9250(bus, csPin) {
-            setup_serial();
-            };
+            IMU( void );
+            /* IMU(SPIClass &bus, uint8_t csPin) : MPU9250(bus, csPin) { */
+            /* setup_serial(); */
+            /* }; */
             virtual ~IMU( void ) {};
 
             void output_serial( void );

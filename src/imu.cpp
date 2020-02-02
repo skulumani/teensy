@@ -114,14 +114,18 @@ int calibrate_imu(MPU9250& IMU) {
 
 
 namespace AHRS {
-    
+
+    IMU::IMU( void ) {
+        this->setup_serial();
+    }
+
     void IMU::setup_serial( void ) {
         Serial.begin(115200);
         Serial.println("Starting IMU Serial outputs");
 
         while(!Serial) {}
 
-        status = this->begin();
+        status = this->imu.begin();
 
         if (status < 0) {
             Serial.println("IMU Initialization unsuccessful");
@@ -134,37 +138,37 @@ namespace AHRS {
 
     void IMU::output_serial( void ) {
 
-        this->readSensor();
+        this->imu.readSensor();
 
         // display the data
-        Serial.print(this->getAccelX_mss(),6);
+        Serial.print(this->imu.getAccelX_mss(),6);
         Serial.print("\t");
 
-        Serial.print(this->getAccelY_mss(),6);
+        Serial.print(this->imu.getAccelY_mss(),6);
         Serial.print("\t");
 
-        Serial.print(this->getAccelZ_mss(),6);
+        Serial.print(this->imu.getAccelZ_mss(),6);
         Serial.print("\t");
 
-        Serial.print(this->getGyroX_rads(),6);
+        Serial.print(this->imu.getGyroX_rads(),6);
         Serial.print("\t");
 
-        Serial.print(this->getGyroY_rads(),6);
+        Serial.print(this->imu.getGyroY_rads(),6);
         Serial.print("\t");
 
-        Serial.print(this->getGyroZ_rads(),6);
+        Serial.print(this->imu.getGyroZ_rads(),6);
         Serial.print("\t");
 
-        Serial.print(this->getMagX_uT(),6);
+        Serial.print(this->imu.getMagX_uT(),6);
         Serial.print("\t");
 
-        Serial.print(this->getMagY_uT(),6);
+        Serial.print(this->imu.getMagY_uT(),6);
         Serial.print("\t");
 
-        Serial.print(this->getMagZ_uT(),6);
+        Serial.print(this->imu.getMagZ_uT(),6);
         Serial.print("\t");
 
-        Serial.println(this->getTemperature_C(),6);
+        Serial.println(this->imu.getTemperature_C(),6);
 
     }
     
