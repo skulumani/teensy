@@ -117,6 +117,25 @@ namespace AHRS {
 
     IMU::IMU( void ) {
         this->setup_serial();
+
+        // setup nanopb 
+        this->accel_stream = pb_ostream_from_buffer(this->accel_buffer, sizeof(this->accel_buffer));
+
+    }
+    
+    void IMU::encode( void ) {
+        this->accel_msg.meas[0] = this->imu.getAccelX_mss();
+        this->accel_msg.meas[1] = this->imu.getAccelY_mss();
+        this->accel_msg.meas[2] = this->imu.getAccelZ_mss();
+        
+        this->imu_msg.accel = this->accel_msg;
+        
+        // write the message to the buffers
+        if (!pb_encode_ex(&this->accel_stream, AHRS_SensorMeasurement_fields, &this->accel_msg, PB_ENCODE_DELIMITED)) {
+            Serial.println("Error");
+            return;
+        }
+
     }
 
     void IMU::setup_serial( void ) {

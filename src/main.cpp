@@ -6,9 +6,6 @@
 #include "utility.h"
 
 #include "simple.pb.h"
-#include "pb_common.h"
-#include "pb.h"
-#include "pb_encode.h"
 #include "pb_decode.h"
 
 /* extern "C" int main(void) */
@@ -18,7 +15,7 @@ int main(void) {
 
     /* setup_led(); */
     
-    uint8_t buffer[128];
+    pb_byte_t buffer[128];
     size_t message_length;
     bool status;
 

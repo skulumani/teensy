@@ -1,0 +1,2 @@
+AHRS.SensorMeasurement.meas      max_count:3
+AHRS.SensorMeasurement.bias      max_count:3
