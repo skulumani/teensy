@@ -52,7 +52,8 @@ namespace AHRS {
             /* setup_serial(); */
             /* }; */
             virtual ~IMU( void ) {};
-
+    
+            // Send the buffers out over serial
             void output_serial( void );
 
             void calibrate( void );
