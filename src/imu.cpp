@@ -124,16 +124,47 @@ namespace AHRS {
     }
     
     void IMU::encode( void ) {
+        this->imu.readSensor();
+
         this->accel_msg.meas[0] = this->imu.getAccelX_mss();
         this->accel_msg.meas[1] = this->imu.getAccelY_mss();
         this->accel_msg.meas[2] = this->imu.getAccelZ_mss();
         
+        this->gyro_msg.meas[0] = this->imu.getGyroX_rads();
+        this->gyro_msg.meas[1] = this->imu.getGyroY_rads();
+        this->gyro_msg.meas[2] = this->imu.getGyroZ_rads();
+
+        this->mag_msg.meas[0] = this->imu.getMagX_uT();
+        this->mag_msg.meas[1] = this->imu.getMagY_uT();
+        this->mag_msg.meas[2] = this->imu.getMagZ_uT();
+
+        this->temp_msg.meas[0] = this->imu.getTemperature_C();
+
         this->imu_msg.accel = this->accel_msg;
-        
+        this->imu_msg.gyro = this->gyro_msg;
+        this->imu_msg.mag = this->mag_msg;
+        this->imu_msg.temp = this->temp_msg;
+
         // write the message to the buffers
+        // accel
         if (!pb_encode_ex(&this->accel_stream, AHRS_SensorMeasurement_fields, &this->accel_msg, PB_ENCODE_DELIMITED)) {
-            Serial.println("Error");
-            return;
+            Serial.println("Error: Accel encoding error");
+        }
+
+        if (!pb_encode_ex(&this->gyro_stream, AHRS_SensorMeasurement_fields, &this->gyro_msg, PB_ENCODE_DELIMITED)) {
+            Serial.println("Error: Gyro encoding error");
+        }
+
+        if (!pb_encode_ex(&this->mag_stream, AHRS_SensorMeasurement_fields, &this->mag_msg, PB_ENCODE_DELIMITED)) {
+            Serial.println("Error: Mag encoding error");
+        }
+
+        if (!pb_encode_ex(&this->temp_stream, AHRS_SensorMeasurement_fields, &this->temp_msg, PB_ENCODE_DELIMITED)) {
+            Serial.println("Error: Temp encoding error");
+        }
+
+        if (!pb_encode_ex(&this->imu_stream, AHRS_SensorMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) {
+            Serial.println("Error: IMU encoding error");
         }
 
     }
@@ -156,39 +187,12 @@ namespace AHRS {
     }
 
     void IMU::output_serial( void ) {
-
-        this->imu.readSensor();
-
-        // display the data
-        Serial.print(this->imu.getAccelX_mss(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getAccelY_mss(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getAccelZ_mss(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getGyroX_rads(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getGyroY_rads(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getGyroZ_rads(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getMagX_uT(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getMagY_uT(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getMagZ_uT(),6);
-        Serial.print("\t");
-
-        Serial.println(this->imu.getTemperature_C(),6);
-
+        
+        // get the latest data
+        this->encode();
+    
+        // send over serial
+        Serial.write(imu_buffer, sizeof(imu_msg));
     }
     
     void IMU::calibrate( void ) {

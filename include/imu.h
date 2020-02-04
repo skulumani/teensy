@@ -38,10 +38,14 @@ namespace AHRS {
             pb_byte_t imu_buffer[AHRS_IMUMeasurement_size];
 
             // streams
-            pb_ostream_t accel_stream; 
+            pb_ostream_t accel_stream, gyro_stream, mag_stream, temp_stream, imu_stream;
 
             // messages
             AHRS_SensorMeasurement accel_msg = AHRS_SensorMeasurement_init_zero;
+            AHRS_SensorMeasurement gyro_msg = AHRS_SensorMeasurement_init_zero;
+            AHRS_SensorMeasurement mag_msg = AHRS_SensorMeasurement_init_zero;
+            AHRS_SensorMeasurement temp_msg = AHRS_SensorMeasurement_init_zero;
+
             AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
 
             // encode measurements
