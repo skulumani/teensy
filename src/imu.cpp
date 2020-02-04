@@ -198,5 +198,8 @@ namespace AHRS {
     void IMU::calibrate( void ) {
 
     }
-
+    
+    void IMU::calibrate_mag( void ) {
+        // collect a bunch of mag data and send off board
+    }
 }

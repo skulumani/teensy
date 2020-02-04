@@ -25,7 +25,6 @@ namespace AHRS {
     class IMU {
         private:
             int status;
-            void setup_serial( void );
             MPU9250 imu = MPU9250(SPI, 10);
             /* MPU9250 imu = MPU9250(Wire, 0x68); */
              
@@ -38,7 +37,11 @@ namespace AHRS {
             pb_byte_t imu_buffer[AHRS_IMUMeasurement_size];
 
             // streams
-            pb_ostream_t accel_stream, gyro_stream, mag_stream, temp_stream, imu_stream;
+            pb_ostream_t accel_stream = pb_ostream_from_buffer(accel_buffer, sizeof(accel_buffer));
+            pb_ostream_t gyro_stream = pb_ostream_from_buffer(gyro_buffer, sizeof(gyro_buffer));
+            pb_ostream_t mag_stream = pb_ostream_from_buffer(mag_buffer, sizeof(mag_buffer));
+            pb_ostream_t temp_stream = pb_ostream_from_buffer(temp_buffer, sizeof(temp_buffer));
+            pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, sizeof(imu_buffer));
 
             // messages
             AHRS_SensorMeasurement accel_msg = AHRS_SensorMeasurement_init_zero;
@@ -49,7 +52,10 @@ namespace AHRS {
             AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
 
             // encode measurements
+            void setup_serial( void );
             void encode( void );
+            
+            void calibrate_mag( void );
         public:
             IMU( void );
             /* IMU(SPIClass &bus, uint8_t csPin) : MPU9250(bus, csPin) { */
