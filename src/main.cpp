@@ -56,11 +56,10 @@ int main(void) {
 
     // loop forever
 	while (1) {
-        /* read_imu(IMU); */
-        /* Serial.println("Working"); */
+        Serial.println("Working");
         /* blink_led(); */
         /* imu.output_serial(); */
-        /* delay(100); */
+        delay(1000);
 	}
 }
 
