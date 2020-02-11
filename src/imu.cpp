@@ -7,7 +7,9 @@ int setup_imu(MPU9250& IMU) {
     Serial.begin(115200);
     Serial.println("Starting");
 
-    while(!Serial) {}
+    while(!Serial) {
+        Serial.println("Broken Serial");
+    }
 
     // start communication with IMU 
     status = IMU.begin();
@@ -27,37 +29,37 @@ int setup_imu(MPU9250& IMU) {
     return status;
 }
 
-int read_imu(MPU9250& IMU) {
-    IMU.readSensor();
+int AHRS::IMU::read_imu( void ) {
+    this->imu.readSensor();
     // display the data
-    Serial.print(IMU.getAccelX_mss(),6);
+    Serial.print(this->imu.getAccelX_mss(),6);
     Serial.print("\t");
     
-    Serial.print(IMU.getAccelY_mss(),6);
+    Serial.print(this->imu.getAccelY_mss(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getAccelZ_mss(),6);
+    Serial.print(this->imu.getAccelZ_mss(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getGyroX_rads(),6);
+    Serial.print(this->imu.getGyroX_rads(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getGyroY_rads(),6);
+    Serial.print(this->imu.getGyroY_rads(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getGyroZ_rads(),6);
+    Serial.print(this->imu.getGyroZ_rads(),6);
     Serial.print("\t");
     
-    Serial.print(IMU.getMagX_uT(),6);
+    Serial.print(this->imu.getMagX_uT(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getMagY_uT(),6);
+    Serial.print(this->imu.getMagY_uT(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getMagZ_uT(),6);
+    Serial.print(this->imu.getMagZ_uT(),6);
     Serial.print("\t");
 
-    Serial.println(IMU.getTemperature_C(),6);
+    Serial.println(this->imu.getTemperature_C(),6);
 
     return 0;
 }

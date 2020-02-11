@@ -25,7 +25,6 @@ namespace AHRS {
     class IMU {
         private:
             int status;
-            MPU9250 imu = MPU9250(SPI, 10);
             /* MPU9250 imu = MPU9250(Wire, 0x68); */
              
             // Buffers for IMU Protobuf message
@@ -67,7 +66,10 @@ namespace AHRS {
             void output_serial( void );
 
             void calibrate( void );
+            
+            int read_imu( void );
 
+            MPU9250 imu = MPU9250(SPI, 10);
     };
 }
 #endif
