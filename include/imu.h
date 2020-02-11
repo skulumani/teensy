@@ -9,6 +9,7 @@
 #include "pb_common.h"
 #include "pb.h"
 #include "pb_encode.h"
+#include "pb_decode.h"
 
 int read_imu(MPU9250& IMU);
 
@@ -28,31 +29,16 @@ namespace AHRS {
             /* MPU9250 imu = MPU9250(Wire, 0x68); */
              
             // Buffers for IMU Protobuf message
-            pb_byte_t accel_buffer[AHRS_SensorMeasurement_size];
-            pb_byte_t gyro_buffer[AHRS_SensorMeasurement_size];
-            pb_byte_t mag_buffer[AHRS_SensorMeasurement_size];
-            pb_byte_t temp_buffer[AHRS_SensorMeasurement_size];
-            
             pb_byte_t imu_buffer[AHRS_IMUMeasurement_size];
 
             // streams
-            pb_ostream_t accel_stream = pb_ostream_from_buffer(accel_buffer, sizeof(accel_buffer));
-            pb_ostream_t gyro_stream = pb_ostream_from_buffer(gyro_buffer, sizeof(gyro_buffer));
-            pb_ostream_t mag_stream = pb_ostream_from_buffer(mag_buffer, sizeof(mag_buffer));
-            pb_ostream_t temp_stream = pb_ostream_from_buffer(temp_buffer, sizeof(temp_buffer));
-            pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, sizeof(imu_buffer));
+            pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, AHRS_IMUMeasurement_size);
 
             // messages
-            AHRS_SensorMeasurement accel_msg = AHRS_SensorMeasurement_init_zero;
-            AHRS_SensorMeasurement gyro_msg = AHRS_SensorMeasurement_init_zero;
-            AHRS_SensorMeasurement mag_msg = AHRS_SensorMeasurement_init_zero;
-            AHRS_SensorMeasurement temp_msg = AHRS_SensorMeasurement_init_zero;
-
             AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
 
             // encode measurements
             void setup_serial( void );
-            void encode( void );
             
             void calibrate_mag( void );
         public:
@@ -68,6 +54,7 @@ namespace AHRS {
             void calibrate( void );
             
             int read_imu( void );
+            void encode( void );
 
             MPU9250 imu = MPU9250(SPI, 10);
     };

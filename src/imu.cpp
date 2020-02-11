@@ -119,53 +119,27 @@ namespace AHRS {
 
     IMU::IMU( void ) {
         this->setup_serial();
-
-        // setup nanopb 
-        this->accel_stream = pb_ostream_from_buffer(this->accel_buffer, sizeof(this->accel_buffer));
-
     }
     
     void IMU::encode( void ) {
         this->imu.readSensor();
 
-        this->accel_msg.meas[0] = this->imu.getAccelX_mss();
-        this->accel_msg.meas[1] = this->imu.getAccelY_mss();
-        this->accel_msg.meas[2] = this->imu.getAccelZ_mss();
+        this->imu_msg.accel_meas[0] = this->imu.getAccelX_mss();
+        this->imu_msg.accel_meas[1] = this->imu.getAccelY_mss();
+        this->imu_msg.accel_meas[2] = this->imu.getAccelZ_mss();
         
-        this->gyro_msg.meas[0] = this->imu.getGyroX_rads();
-        this->gyro_msg.meas[1] = this->imu.getGyroY_rads();
-        this->gyro_msg.meas[2] = this->imu.getGyroZ_rads();
+        this->imu_msg.gyro_meas[0] = this->imu.getGyroX_rads();
+        this->imu_msg.gyro_meas[1] = this->imu.getGyroY_rads();
+        this->imu_msg.gyro_meas[2] = this->imu.getGyroZ_rads();
 
-        this->mag_msg.meas[0] = this->imu.getMagX_uT();
-        this->mag_msg.meas[1] = this->imu.getMagY_uT();
-        this->mag_msg.meas[2] = this->imu.getMagZ_uT();
+        this->imu_msg.mag_meas[0] = this->imu.getMagX_uT();
+        this->imu_msg.mag_meas[1] = this->imu.getMagY_uT();
+        this->imu_msg.mag_meas[2] = this->imu.getMagZ_uT();
 
-        this->temp_msg.meas[0] = this->imu.getTemperature_C();
-
-        this->imu_msg.accel = this->accel_msg;
-        this->imu_msg.gyro = this->gyro_msg;
-        this->imu_msg.mag = this->mag_msg;
-        this->imu_msg.temp = this->temp_msg;
+        this->imu_msg.temp_meas = this->imu.getTemperature_C();
 
         // write the message to the buffers
-        // accel
-        if (!pb_encode_ex(&this->accel_stream, AHRS_SensorMeasurement_fields, &this->accel_msg, PB_ENCODE_DELIMITED)) {
-            Serial.println("Error: Accel encoding error");
-        }
-
-        if (!pb_encode_ex(&this->gyro_stream, AHRS_SensorMeasurement_fields, &this->gyro_msg, PB_ENCODE_DELIMITED)) {
-            Serial.println("Error: Gyro encoding error");
-        }
-
-        if (!pb_encode_ex(&this->mag_stream, AHRS_SensorMeasurement_fields, &this->mag_msg, PB_ENCODE_DELIMITED)) {
-            Serial.println("Error: Mag encoding error");
-        }
-
-        if (!pb_encode_ex(&this->temp_stream, AHRS_SensorMeasurement_fields, &this->temp_msg, PB_ENCODE_DELIMITED)) {
-            Serial.println("Error: Temp encoding error");
-        }
-
-        if (!pb_encode_ex(&this->imu_stream, AHRS_SensorMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) {
+        if (!pb_encode_ex(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) {
             Serial.println("Error: IMU encoding error");
         }
 
@@ -194,7 +168,15 @@ namespace AHRS {
         this->encode();
     
         // send over serial
-        Serial.write(imu_buffer, sizeof(imu_msg));
+        /* Serial.write(this->imu_buffer, AHRS_IMUMeasurement_size); */
+
+        // decode here and output over serial
+        AHRS_IMUMeasurement imu_new = AHRS_IMUMeasurement_init_zero;
+        pb_byte_t imu_buffer_new[AHRS_IMUMeasurement_size];
+        pb_istream_t stream = pb_istream_from_buffer(this->imu_buffer, AHRS_IMUMeasurement_size);
+        bool status = pb_decode_ex(&stream, AHRS_IMUMeasurement_fields, &imu_new, PB_DECODE_DELIMITED);
+
+        Serial.println((float)imu_new.accel_meas[0]);
     }
     
     void IMU::calibrate( void ) {

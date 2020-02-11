@@ -14,6 +14,22 @@ extern "C" {
 #endif
 
 /* Struct definitions */
+typedef struct _AHRS_IMUMeasurement {
+    pb_size_t accel_meas_count;
+    float accel_meas[3];
+    pb_size_t accel_bias_count;
+    float accel_bias[3];
+    pb_size_t gyro_meas_count;
+    float gyro_meas[3];
+    pb_size_t gyro_bias_count;
+    float gyro_bias[3];
+    pb_size_t mag_meas_count;
+    float mag_meas[3];
+    pb_size_t mag_bias_count;
+    float mag_bias[3];
+    float temp_meas;
+} AHRS_IMUMeasurement;
+
 typedef struct _AHRS_SensorMeasurement {
     pb_size_t meas_count;
     float meas[3];
@@ -21,31 +37,23 @@ typedef struct _AHRS_SensorMeasurement {
     float bias[3];
 } AHRS_SensorMeasurement;
 
-typedef struct _AHRS_IMUMeasurement {
-    bool has_accel;
-    AHRS_SensorMeasurement accel;
-    bool has_gyro;
-    AHRS_SensorMeasurement gyro;
-    bool has_mag;
-    AHRS_SensorMeasurement mag;
-    bool has_temp;
-    AHRS_SensorMeasurement temp;
-} AHRS_IMUMeasurement;
-
 
 /* Initializer values for message structs */
 #define AHRS_SensorMeasurement_init_default      {0, {0, 0, 0}, 0, {0, 0, 0}}
-#define AHRS_IMUMeasurement_init_default         {false, AHRS_SensorMeasurement_init_default, false, AHRS_SensorMeasurement_init_default, false, AHRS_SensorMeasurement_init_default, false, AHRS_SensorMeasurement_init_default}
+#define AHRS_IMUMeasurement_init_default         {0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0}
 #define AHRS_SensorMeasurement_init_zero         {0, {0, 0, 0}, 0, {0, 0, 0}}
-#define AHRS_IMUMeasurement_init_zero            {false, AHRS_SensorMeasurement_init_zero, false, AHRS_SensorMeasurement_init_zero, false, AHRS_SensorMeasurement_init_zero, false, AHRS_SensorMeasurement_init_zero}
+#define AHRS_IMUMeasurement_init_zero            {0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0}
 
 /* Field tags (for use in manual encoding/decoding) */
+#define AHRS_IMUMeasurement_accel_meas_tag       1
+#define AHRS_IMUMeasurement_accel_bias_tag       2
+#define AHRS_IMUMeasurement_gyro_meas_tag        3
+#define AHRS_IMUMeasurement_gyro_bias_tag        4
+#define AHRS_IMUMeasurement_mag_meas_tag         5
+#define AHRS_IMUMeasurement_mag_bias_tag         6
+#define AHRS_IMUMeasurement_temp_meas_tag        7
 #define AHRS_SensorMeasurement_meas_tag          1
 #define AHRS_SensorMeasurement_bias_tag          2
-#define AHRS_IMUMeasurement_accel_tag            1
-#define AHRS_IMUMeasurement_gyro_tag             2
-#define AHRS_IMUMeasurement_mag_tag              3
-#define AHRS_IMUMeasurement_temp_tag             4
 
 /* Struct field encoding specification for nanopb */
 #define AHRS_SensorMeasurement_FIELDLIST(X, a) \
@@ -55,16 +63,15 @@ X(a, STATIC,   REPEATED, FLOAT,    bias,              2)
 #define AHRS_SensorMeasurement_DEFAULT NULL
 
 #define AHRS_IMUMeasurement_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  accel,             1) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  gyro,              2) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  mag,               3) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  temp,              4)
+X(a, STATIC,   REPEATED, FLOAT,    accel_meas,        1) \
+X(a, STATIC,   REPEATED, FLOAT,    accel_bias,        2) \
+X(a, STATIC,   REPEATED, FLOAT,    gyro_meas,         3) \
+X(a, STATIC,   REPEATED, FLOAT,    gyro_bias,         4) \
+X(a, STATIC,   REPEATED, FLOAT,    mag_meas,          5) \
+X(a, STATIC,   REPEATED, FLOAT,    mag_bias,          6) \
+X(a, STATIC,   SINGULAR, FLOAT,    temp_meas,         7)
 #define AHRS_IMUMeasurement_CALLBACK NULL
 #define AHRS_IMUMeasurement_DEFAULT NULL
-#define AHRS_IMUMeasurement_accel_MSGTYPE AHRS_SensorMeasurement
-#define AHRS_IMUMeasurement_gyro_MSGTYPE AHRS_SensorMeasurement
-#define AHRS_IMUMeasurement_mag_MSGTYPE AHRS_SensorMeasurement
-#define AHRS_IMUMeasurement_temp_MSGTYPE AHRS_SensorMeasurement
 
 extern const pb_msgdesc_t AHRS_SensorMeasurement_msg;
 extern const pb_msgdesc_t AHRS_IMUMeasurement_msg;
@@ -75,7 +82,7 @@ extern const pb_msgdesc_t AHRS_IMUMeasurement_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define AHRS_SensorMeasurement_size              30
-#define AHRS_IMUMeasurement_size                 128
+#define AHRS_IMUMeasurement_size                 95
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -1,2 +1,8 @@
-AHRS.SensorMeasurement.meas      max_count:3
-AHRS.SensorMeasurement.bias      max_count:3
+AHRS.SensorMeasurement.meas                      max_count:3
+AHRS.SensorMeasurement.bias                     max_count:3
+AHRS.IMUMeasurement.accel_meas                  max_count:3
+AHRS.IMUMeasurement.accel_bias                  max_count:3
+AHRS.IMUMeasurement.gyro_meas                   max_count:3
+AHRS.IMUMeasurement.gyro_bias                   max_count:3
+AHRS.IMUMeasurement.mag_meas                    max_count:3
+AHRS.IMUMeasurement.mag_bias                    max_count:3
