@@ -22,6 +22,8 @@ int calibrate_imu(MPU9250& IMU);
 //
 int setup_imu(MPU9250 &IMU);
 
+#define max_message_size 128
+
 namespace AHRS {
     class IMU {
         private:
@@ -29,11 +31,9 @@ namespace AHRS {
             /* MPU9250 imu = MPU9250(Wire, 0x68); */
              
             // Buffers for IMU Protobuf message
-            pb_byte_t imu_buffer[AHRS_IMUMeasurement_size];
-
+            pb_byte_t imu_buffer[max_message_size];
             // streams
-            pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, AHRS_IMUMeasurement_size);
-
+            pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, max_message_size);
             // messages
             AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
 

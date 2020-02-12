@@ -121,8 +121,31 @@ namespace AHRS {
         this->setup_serial();
     }
     
+
+    void IMU::setup_serial( void ) {
+        Serial.begin(115200);
+        Serial.println("Starting IMU Serial outputs");
+
+        while(!Serial) {}
+
+        status = this->imu.begin();
+
+        if (status < 0) {
+            Serial.println("IMU Initialization unsuccessful");
+            Serial.println("Check IMU wiring or power cycle");
+            Serial.print("Status: ");
+            Serial.println(status);
+            while(1) {};
+        }
+    }
+
     void IMU::encode( void ) {
         this->imu.readSensor();
+
+        // setup nanopb stuff
+        /* pb_byte_t imu_buffer[AHRS_IMUMeasurement_size]; */
+        /* pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, AHRS_IMUMeasurement_size); */
+        /* AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero; */
 
         this->imu_msg.accel_meas[0] = this->imu.getAccelX_mss();
         this->imu_msg.accel_meas[1] = this->imu.getAccelY_mss();
@@ -145,23 +168,6 @@ namespace AHRS {
 
     }
 
-    void IMU::setup_serial( void ) {
-        Serial.begin(115200);
-        Serial.println("Starting IMU Serial outputs");
-
-        while(!Serial) {}
-
-        status = this->imu.begin();
-
-        if (status < 0) {
-            Serial.println("IMU Initialization unsuccessful");
-            Serial.println("Check IMU wiring or power cycle");
-            Serial.print("Status: ");
-            Serial.println(status);
-            while(1) {};
-        }
-    }
-
     void IMU::output_serial( void ) {
         
         // get the latest data
@@ -171,12 +177,13 @@ namespace AHRS {
         /* Serial.write(this->imu_buffer, AHRS_IMUMeasurement_size); */
 
         // decode here and output over serial
-        AHRS_IMUMeasurement imu_new = AHRS_IMUMeasurement_init_zero;
-        pb_byte_t imu_buffer_new[AHRS_IMUMeasurement_size];
-        pb_istream_t stream = pb_istream_from_buffer(this->imu_buffer, AHRS_IMUMeasurement_size);
-        bool status = pb_decode_ex(&stream, AHRS_IMUMeasurement_fields, &imu_new, PB_DECODE_DELIMITED);
-
-        Serial.println((float)imu_new.accel_meas[0]);
+        {
+            AHRS_IMUMeasurement imu_new = AHRS_IMUMeasurement_init_zero;
+            pb_byte_t imu_buffer_new[max_message_size];
+            pb_istream_t stream = pb_istream_from_buffer(this->imu_buffer, max_message_size);
+            bool status = pb_decode_ex(&stream, AHRS_IMUMeasurement_fields, &imu_new, PB_DECODE_DELIMITED);
+            Serial.println((float)imu_new.accel_meas[0]);
+        }
     }
     
     void IMU::calibrate( void ) {
