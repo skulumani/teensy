@@ -4,3 +4,12 @@
 [submodule "teensy-template"]
 	path = teensy-template
 	url = git@github.com:apmorton/teensy-template.git
+[submodule "lib/MPU9250"]
+	path = lib/MPU9250
+	url = git@github.com:skulumani/MPU9250.git
+[submodule "lib/spi4teensy3"]
+	path = lib/spi4teensy3
+	url = git@github.com:xxxajk/spi4teensy3.git
+[submodule "lib/Eigen"]
+	path = lib/Eigen
+	url = git@github.com:skulumani/Eigen.git

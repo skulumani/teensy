@@ -6,7 +6,7 @@ TARGET = blink_official
 TEENSY = 35
 
 # Set to 24000000, 48000000, or 96000000 to set CPU core speed
-TEENSY_CORE_SPEED = 48000000
+TEENSY_CORE_SPEED = 120000000
 
 # Some libraries will require this to be defined
 # If you define this, you will break the default main.cpp
@@ -25,18 +25,20 @@ BUILDDIR = $(abspath $(CURDIR)/build)
 #************************************************************************
 
 # path location for Teensy Loader, teensy_post_compile and teensy_reboot
-TOOLSPATH = $(CURDIR)/tools
-
-# ifeq ($(OS),Windows_NT)
-#     $(error What is Win Dose?)
-# else
-#     UNAME_S := $(shell uname -s)
-#     ifeq ($(UNAME_S),Darwin)
-#         TOOLSPATH = /Applications/Arduino.app/Contents/Java/hardware/tools/
-#     endif
-# endif
+# TOOLSPATH = $(CURDIR)/tools
+ifeq ($(OS), Windows_NT)
+	$(error No Windows support)
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S), Darwin)
+		TOOLSPATH = /Applications/Arduino.app/Contents/Java/hardware/tools
+	else 
+		$(error Define Linux path to Arduino)
+	endif
+endif
 
 # path location for Teensy 3 core
+# COREPATH = /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3
 COREPATH = teensy3
 
 # path location for Arduino libraries
@@ -106,8 +108,8 @@ OBJCOPY = $(abspath $(COMPILERPATH))/arm-none-eabi-objcopy
 SIZE = $(abspath $(COMPILERPATH))/arm-none-eabi-size
 
 # automatically create lists of the sources and objects
-LC_FILES := $(wildcard $(LIBRARYPATH)/*/*.c)
-LCPP_FILES := $(wildcard $(LIBRARYPATH)/*/*.cpp)
+LC_FILES := $(wildcard $(LIBRARYPATH)/*/*.c) $(wildcard $(LIBRARYPATH)/*/src/*.c)
+LCPP_FILES := $(wildcard $(LIBRARYPATH)/*/*.cpp) $(wildcard $(LIBRARYPATH)/*/src/*.cpp)
 TC_FILES := $(wildcard $(COREPATH)/*.c)
 TCPP_FILES := $(wildcard $(COREPATH)/*.cpp)
 C_FILES := $(wildcard src/*.c)
@@ -115,9 +117,11 @@ CPP_FILES := $(wildcard src/*.cpp)
 INO_FILES := $(wildcard src/*.ino)
 
 # include paths for libraries
-L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/)), -I$(lib))
+L_INC := $(foreach lib,$(filter %/, $(wildcard $(LIBRARYPATH)/*/) $(wildcard $(LIBRARYPATH)/*/src/) $(wildcard include/)), -I$(lib))
 
+# substitutes endings to give  a big list of sources
 SOURCES := $(C_FILES:.c=.o) $(CPP_FILES:.cpp=.o) $(INO_FILES:.ino=.o) $(TC_FILES:.c=.o) $(TCPP_FILES:.cpp=.o) $(LC_FILES:.c=.o) $(LCPP_FILES:.cpp=.o)
+# gets all the OBJ files in the build directory
 OBJS := $(foreach src,$(SOURCES), $(BUILDDIR)/$(src))
 
 all: hex
@@ -149,10 +153,12 @@ $(BUILDDIR)/%.o: %.ino
 	@mkdir -p "$(dir $@)"
 	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(L_INC) -o "$@" -x c++ -include Arduino.h -c "$<"
 
+# depends on right side
 $(TARGET).elf: $(OBJS) $(LDSCRIPT)
 	@echo -e "[LD]\t$@"
 	@$(CC) $(LDFLAGS) -o "$@" $(OBJS) $(LIBS)
 
+# converts all elf to hex - need this
 %.hex: %.elf
 	@echo -e "[HEX]\t$@"
 	@$(SIZE) "$<"
@@ -184,3 +190,10 @@ clean:
 	@echo Cleaning...
 	@rm -rf "$(BUILDDIR)"
 	@rm -f "$(TARGET).elf" "$(TARGET).hex"
+
+mpu_example: src/main.cpp
+	@echo Starting....
+	$(info $$OBJS is [${OBJS}])
+# hex, elf, o in reverse order
+# build object files
+# $(CXX) $(CPPFLAGS) $(CPPFLAGS) $(L_INC) -o "$@" -c "$<"

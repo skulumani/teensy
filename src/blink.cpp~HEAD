@@ -1,0 +1,36 @@
+#include "WProgram.h"
+#include "MPU9250.h"
+
+#include "imu.h"
+#include "eigen_teensy.h"
+#include "utility.h"
+
+<<<<<<< HEAD:src/blink.cpp
+	// To use Teensy 3.0 without Arduino, simply put your code here.
+	// For example:
+
+	pinMode(13, OUTPUT);
+	while (1) {
+		digitalWriteFast(13, HIGH);
+		delay(200);
+		digitalWriteFast(13, LOW);
+		delay(1000);
+	}
+=======
+/* extern "C" int main(void) */
+int main(void) {
+>>>>>>> eb2725b9b2fec8bbc04151520ce139aebb64f68b:src/main.cpp
+
+    AHRS::IMU imu;
+
+    /* setup_led(); */
+    // always need a loop 
+	while (1) {
+        /* read_imu(IMU); */
+        /* Serial.println("Working"); */
+        /* blink_led(); */
+        imu.output_serial();
+        delay(100);
+	}
+}
+

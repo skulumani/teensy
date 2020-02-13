@@ -4,12 +4,53 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 
 ## TODO
 
-* Update teensy3 library and tools from the Arduino installation
-* Add more examples
-* Script to download ARM compiler tools from website
-* Get teensy core code as a submodule
+* [x] Update teensy3 library and tools from the Arduino installation
+* ~~* Add more examples~~
+* ~~* Script to download ARM compiler tools from website~~
+* ~~* Get teensy core code as a submodule~~
 * Use makefile example to build simple setup script and use teensy_loader_cli to push to board
-* Get MPU9250 library installed and working
+* [x] Get MPU9250 library installed and working
+* [ ] Fix MPU9250.h to initialize the bias/scale factor variables (around line 169)
+* [ ] Calibrate IMU 
+* [ ] Create IMU wrapper class to interface with MPU9250 and rotate outputs to match breakboard diagram
+* [ ] Test code to read at 1000Hz
+* [ ] AHRS
+
+## SPI Wiring for MPU 9250
+
+Numbers correspond to pin out diagram - NOT location on board
+
+* SCK - Clock pin 13 
+* MOSI - pin 11
+* MISO - pin 12
+* SS - default is usually pin 10 but you can select any digital IO pin
+
+Connecting to 9250
+
+* NCS => SS Pin 10
+* SDA -> MOSI  pin 11
+* ADO -> MISO pin 12
+* SCL -> SCK pin 13
+* VCC -> 3.3V Pin 3
+* GND -> GND 
+
+9250 Pins
+
+~~~
+VDD: this should be a 2.4V to 3.6V power source.
+GND: ground.
+VDDI: digital I/O supply voltage. This should be between 1.71V and VDD.
+FSYNC: not used, should be grounded.
+INT: (optional) used for the interrupt output setup in enableDataReadyInterrupt and enableWakeOnMotion. Connect to interruptable pin on microcontroller.
+SDA / SDI: connect to MOSI.
+SCL / SCLK: connect to SCK.
+AD0 / SDO: connect to MISO.
+nCS: connect to chip select pin. Pin 10 was used in the code snippets in this document and the included examples, but any digital I/O pin can be used.
+AUXDA: not used.
+AUXCL: not used.
+~~~
+
+* [SPI Library](https://www.pjrc.com/teensy/td_libs_SPI.html)
 
 ## Setup instructions for using Arduino IDE
 
@@ -47,9 +88,9 @@ sudo cp ./49-teensy.rules /etc/udev/rules.d/
 
 To avoid We just need Teensyduino so we can copy the files located
 
-* `<ARDUINOPATH>/hardware/tools/arm` goes to `<prj>/tools/compiler`
+* `<ARDUINOPATH>/hardware/tools/arm` goes to `<prj>/tools`
 * `<ARDUINOPATH>/hardware/tools/<executable >` goes to `<prj>/tools`
-* `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy` 
+* `<ARDUINOPATH>/hardware/teensy/avr/cores/teensy3` goes to `<prj>/teensy3` 
 
 ## Teensy Loader Command Line 
 
@@ -87,6 +128,10 @@ teensy_loader_cli --mcu=TEENSY35 -w <name of nex>.hex
 
 ## Example [makefile](https://github.com/PaulStoffregen/cores/blob/master/teensy3/Makefile)
 
+## Libraries
+
+* [SD Card](https://github.com/greiman/SdFat-beta)
+
 ## MPU9250 libraries
 
 Two possible libraries for MPU9250. need to figure out which is best/most complete
@@ -109,3 +154,17 @@ Two possible libraries for MPU9250. need to figure out which is best/most comple
 * [Embedded AVR](http://maxembedded.com/2015/06/setting-up-avr-gcc-toolchain-on-linux-and-mac-os-x/)
 * [Arduino Makefile](https://github.com/sudar/Arduino-Makefile)
 * [PlatformIO](https://github.com/platformio/platformio-core/)
+
+### CMake examples
+
+https://github.com/drichelson/teensy-cmake
+
+https://github.com/xya/teensy-cmake
+
+## Magnetometer Calibration
+
+* https://ieeexplore.ieee.org/document/1290055
+* https://www.hindawi.com/journals/js/2010/967245/#B11
+* https://teslabs.com/articles/magnetometer-calibration/
+* https://ieeexplore.ieee.org/document/6289882
+* https://www.vectornav.com/docs/default-source/documentation/vn-100-documentation/AN012.pdf?sfvrsn=c99fe6b9_15
