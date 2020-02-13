@@ -32,7 +32,8 @@ else
 	ifeq ($(UNAME_S), Darwin)
 		TOOLSPATH = /Applications/Arduino.app/Contents/Java/hardware/tools
 	else 
-		$(error Define Linux path to Arduino)
+		# $(error Define Linux path to Arduino)
+		TOOLSPATH = /home/shankar/Documents/arduino-1.8.10/hardware/tools
 	endif
 endif
 
