@@ -176,6 +176,7 @@ Uses [nanopb](https://jpa.kapsi.fi/nanopb/)
 4. Copy the new message definition files to `src` or `include`
 5. Update the following files if desired: `pb.h`, `pb_common.h`, `pb_encode.h`, `pb_decode.h`, `pb_common.c`, `pb_encode.c`, `pb_decode.c`
 
+* [Stream Binding](https://github.com/eric-wieser/nanopb-arduino)
 ~~~
 
 pb_byte_t buffer[128];
