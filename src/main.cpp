@@ -1,3 +1,5 @@
+#include <Print.h>
+#include <Stream.h>
 
 #include "MPU9250.h"
 
@@ -7,6 +9,7 @@
 
 #include "simple.pb.h"
 #include "pb_decode.h"
+#include "pb_encode.h"
 
 /* extern "C" int main(void) */
 int main(void) {
