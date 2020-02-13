@@ -44,6 +44,18 @@ int main(void) {
 
     AHRS::IMU imu;
 
+    AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
+    imu_msg.accel_meas[0] = 1.0;
+    imu_msg.accel_meas[1] = 2.0;
+    imu_msg.accel_meas[2] = 3.0;
+
+    pb_ostream_s pb_out = as_pb_ostream(Serial);
+    Serial.println("encoding");
+    bool status = pb_encode(&pb_out, AHRS_IMUMeasurement_fields, &imu_msg);
+    
+    // pb_istream_s pb_in = as_pb_istream(Serial);
+    // pb_decode(&pb_in, AHRS_IMUMeasurement_fields, &imu_msg)
+    //
     // loop forever
     while (1) {
         delay(1000);
