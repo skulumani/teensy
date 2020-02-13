@@ -62,7 +62,7 @@ int main(void) {
         imu_msg.accel_meas[2] = imu.imu.getAccelZ_mss();
 
         bool status = pb_encode(&pb_out, AHRS_IMUMeasurement_fields, &imu_msg);
-        serial_usb.println(pb_out.bytes_written);
+        serial_usb.println(imu.imu.getAccelX_mss(), 9);
         delay(1000);
     }
 }
