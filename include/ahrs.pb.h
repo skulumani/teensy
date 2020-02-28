@@ -15,34 +15,26 @@ extern "C" {
 
 /* Struct definitions */
 typedef struct _AHRS_IMUMeasurement {
-    pb_size_t accel_meas_count;
     float accel_meas[3];
-    pb_size_t accel_bias_count;
     float accel_bias[3];
-    pb_size_t gyro_meas_count;
     float gyro_meas[3];
-    pb_size_t gyro_bias_count;
     float gyro_bias[3];
-    pb_size_t mag_meas_count;
     float mag_meas[3];
-    pb_size_t mag_bias_count;
     float mag_bias[3];
     float temp_meas;
 } AHRS_IMUMeasurement;
 
 typedef struct _AHRS_SensorMeasurement {
-    pb_size_t meas_count;
     float meas[3];
-    pb_size_t bias_count;
     float bias[3];
 } AHRS_SensorMeasurement;
 
 
 /* Initializer values for message structs */
-#define AHRS_SensorMeasurement_init_default      {0, {0, 0, 0}, 0, {0, 0, 0}}
-#define AHRS_IMUMeasurement_init_default         {0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0}
-#define AHRS_SensorMeasurement_init_zero         {0, {0, 0, 0}, 0, {0, 0, 0}}
-#define AHRS_IMUMeasurement_init_zero            {0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0, {0, 0, 0}, 0}
+#define AHRS_SensorMeasurement_init_default      {{0, 0, 0}, {0, 0, 0}}
+#define AHRS_IMUMeasurement_init_default         {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, 0}
+#define AHRS_SensorMeasurement_init_zero         {{0, 0, 0}, {0, 0, 0}}
+#define AHRS_IMUMeasurement_init_zero            {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, 0}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define AHRS_IMUMeasurement_accel_meas_tag       1
@@ -57,18 +49,18 @@ typedef struct _AHRS_SensorMeasurement {
 
 /* Struct field encoding specification for nanopb */
 #define AHRS_SensorMeasurement_FIELDLIST(X, a) \
-X(a, STATIC,   REPEATED, FLOAT,    meas,              1) \
-X(a, STATIC,   REPEATED, FLOAT,    bias,              2)
+X(a, STATIC,   FIXARRAY, FLOAT,    meas,              1) \
+X(a, STATIC,   FIXARRAY, FLOAT,    bias,              2)
 #define AHRS_SensorMeasurement_CALLBACK NULL
 #define AHRS_SensorMeasurement_DEFAULT NULL
 
 #define AHRS_IMUMeasurement_FIELDLIST(X, a) \
-X(a, STATIC,   REPEATED, FLOAT,    accel_meas,        1) \
-X(a, STATIC,   REPEATED, FLOAT,    accel_bias,        2) \
-X(a, STATIC,   REPEATED, FLOAT,    gyro_meas,         3) \
-X(a, STATIC,   REPEATED, FLOAT,    gyro_bias,         4) \
-X(a, STATIC,   REPEATED, FLOAT,    mag_meas,          5) \
-X(a, STATIC,   REPEATED, FLOAT,    mag_bias,          6) \
+X(a, STATIC,   FIXARRAY, FLOAT,    accel_meas,        1) \
+X(a, STATIC,   FIXARRAY, FLOAT,    accel_bias,        2) \
+X(a, STATIC,   FIXARRAY, FLOAT,    gyro_meas,         3) \
+X(a, STATIC,   FIXARRAY, FLOAT,    gyro_bias,         4) \
+X(a, STATIC,   FIXARRAY, FLOAT,    mag_meas,          5) \
+X(a, STATIC,   FIXARRAY, FLOAT,    mag_bias,          6) \
 X(a, STATIC,   SINGULAR, FLOAT,    temp_meas,         7)
 #define AHRS_IMUMeasurement_CALLBACK NULL
 #define AHRS_IMUMeasurement_DEFAULT NULL

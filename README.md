@@ -21,8 +21,8 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 Numbers correspond to pin out diagram - NOT location on board
 
 * SCK - Clock pin 13 
-* MOSI - pin 11
-* MISO - pin 12
+* SDA/MOSI - pin 11
+* ADO/MISO - pin 12
 * SS - default is usually pin 10 but you can select any digital IO pin
 
 Connecting to 9250

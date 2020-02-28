@@ -1,10 +1,11 @@
 syntax = "proto3";
+import "nanopb.proto";
 
 package AHRS;
 
 message SensorMeasurement {
-    repeated float meas = 1;
-    repeated float bias = 2;
+    repeated float meas = 1 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
+    repeated float bias = 2 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
 }
 
 
@@ -16,11 +17,11 @@ message SensorMeasurement {
 /* } */
 
 message IMUMeasurement {
-    repeated float accel_meas = 1;
-    repeated float accel_bias = 2;
-    repeated float gyro_meas  = 3;
-    repeated float gyro_bias  = 4;
-    repeated float mag_meas   = 5;
-    repeated float mag_bias   = 6;
+    repeated float accel_meas = 1 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
+    repeated float accel_bias = 2 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
+    repeated float gyro_meas  = 3 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
+    repeated float gyro_bias  = 4 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
+    repeated float mag_meas   = 5 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
+    repeated float mag_bias   = 6 [(nanopb).max_count = 3, (nanopb).fixed_count = true];
     float temp_meas  = 7;
 }

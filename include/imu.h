@@ -30,18 +30,15 @@ namespace AHRS {
             int status;
             /* MPU9250 imu = MPU9250(Wire, 0x68); */
              
-            // Buffers for IMU Protobuf message
-            pb_byte_t imu_buffer[max_message_size];
-            // streams
-            pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, max_message_size);
-            // messages
-            AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
 
             // encode measurements
             /* void setup_serial( void ); */
             
             void calibrate_mag( void );
         public:
+            // Buffers for IMU Protobuf message
+            pb_byte_t imu_buffer[max_message_size];
+
             IMU( void );
             /* IMU(SPIClass &bus, uint8_t csPin) : MPU9250(bus, csPin) { */
             /* setup_serial(); */
@@ -55,6 +52,8 @@ namespace AHRS {
             
             int read_imu( void );
             void encode( void );
+            
+            void send(usb_serial_class& serial_usb);
 
             MPU9250 imu = MPU9250(SPI, 10);
     };
