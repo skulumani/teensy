@@ -226,12 +226,12 @@ Serial.println((int)message.lucky_number);
     size_t message_length;
     bool status;
     SimpleMessage message = SimpleMessage_init_zero;
-    pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
     
     int count = 0;
     while (1) {
         // ENCODING
         message.lucky_number = count;
+        pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
         status = pb_encode(&pb_out, SimpleMessage_fields, &message);
         message_length = pb_out.bytes_written;
 

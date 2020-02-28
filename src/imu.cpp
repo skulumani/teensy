@@ -146,9 +146,8 @@ namespace AHRS {
         this->imu.readSensor();
 
         // setup nanopb stuff
-        /* pb_byte_t imu_buffer[AHRS_IMUMeasurement_size]; */
-        /* pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, AHRS_IMUMeasurement_size); */
-        /* AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero; */
+        AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
+        pb_ostream_t imu_stream = pb_ostream_from_buffer(this->imu_buffer, sizeof(this->imu_buffer));
 
         this->imu_msg.accel_meas[0] = this->imu.getAccelX_mss();
         this->imu_msg.accel_meas[1] = this->imu.getAccelY_mss();
@@ -164,20 +163,20 @@ namespace AHRS {
 
         this->imu_msg.temp_meas = this->imu.getTemperature_C();
 
+        if(!pb_encode(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg)) {}
         // write the message to the buffers
-        /* if (!pb_encode_ex(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) { */
-        /*     Serial.println("Error: IMU encoding error"); */
-        /* } */
-    
-        if(!pb_encode(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg)) {
-        // error
-        }
-    }
+        /**
+          if (!pb_encode_ex(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) {
+          Serial.println("Error: IMU encoding error");
+          }
+         **/ 
 
+    }
+    /**
     void IMU::output_serial(usb_serial_class& serial_usb ) {
         serial_usb.write(this->imu_buffer, sizeof(this->imu_buffer)); 
     }
-    
+  **/  
     void IMU::calibrate( void ) {
 
     }

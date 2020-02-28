@@ -49,7 +49,7 @@ namespace AHRS {
             virtual ~IMU( void ) {};
     
             // Send the buffers out over serial
-            void output_serial(usb_serial_class& serial_usb);
+            /* void output_serial(usb_serial_class& serial_usb); */
 
             void calibrate( void );
             

@@ -42,7 +42,7 @@ pb_istream_s as_pb_istream(Stream& s) {
 /* extern "C" int main(void) */
 int main(void) {
     
-    /* AHRS::IMU imu; */
+    AHRS::IMU imu;
     usb_serial_class serial_usb;
     serial_usb.begin(115200);
 
@@ -51,7 +51,6 @@ int main(void) {
     uint8_t buffer[128];
     size_t message_length;
     bool status;
-    SimpleMessage message = SimpleMessage_init_zero;
     
     // can no longer print to console when using nanopb - we're sending bytes
     /* serial_usb.println("starting"); */
@@ -62,16 +61,19 @@ int main(void) {
     // loop forever
     int count = 0;
     while (1) {
-        /* imu.encode(); */
+        imu.encode();
     
         // ENCODING
+        SimpleMessage message = SimpleMessage_init_zero;
+        pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
+
         message.lucky_number = count;
 
-        pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
         status = pb_encode(&pb_out, SimpleMessage_fields, &message);
         message_length = pb_out.bytes_written;
 
-        serial_usb.write(buffer, sizeof(buffer));
+        /* serial_usb.write(buffer, sizeof(buffer)); */
+        serial_usb.write(imu.imu_buffer, sizeof(imu.imu_buffer));
 
         delay(1000);
         count = count +1;
