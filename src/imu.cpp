@@ -131,25 +131,27 @@ namespace AHRS {
     }
     
     void IMU::encode( void ) {
-        this->imu.readSensor();
-        
         // setup nanopb stuff
         AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
         pb_ostream_t imu_stream = pb_ostream_from_buffer(this->imu_buffer, sizeof(this->imu_buffer));
 
-        imu_msg.accel_meas[0] = this->imu.getAccelX_mss();
-        imu_msg.accel_meas[1] = this->imu.getAccelY_mss();
-        imu_msg.accel_meas[2] = this->imu.getAccelZ_mss();
+        this->imu.readSensor();
         
-        imu_msg.gyro_meas[0] = this->imu.getGyroX_rads();
-        imu_msg.gyro_meas[1] = this->imu.getGyroY_rads();
-        imu_msg.gyro_meas[2] = this->imu.getGyroZ_rads();
+        imu_msg.time      = micros();
 
-        imu_msg.mag_meas[0] = this->imu.getMagX_uT();
-        imu_msg.mag_meas[1] = this->imu.getMagY_uT();
-        imu_msg.mag_meas[2] = this->imu.getMagZ_uT();
+        imu_msg.ax = this->imu.getAccelX_mss();
+        imu_msg.ay = this->imu.getAccelY_mss();
+        imu_msg.az = this->imu.getAccelZ_mss();
+        
+        imu_msg.gx = this->imu.getGyroX_rads();
+        imu_msg.gy = this->imu.getGyroY_rads();
+        imu_msg.gz = this->imu.getGyroZ_rads();
 
-        imu_msg.temp_meas = this->imu.getTemperature_C();
+        imu_msg.mx = this->imu.getMagX_uT();
+        imu_msg.my = this->imu.getMagY_uT();
+        imu_msg.mz = this->imu.getMagZ_uT();
+
+        imu_msg.temp = this->imu.getTemperature_C();
 
         pb_encode(&imu_stream, AHRS_IMUMeasurement_fields, &imu_msg);
          

@@ -225,28 +225,27 @@ Serial.println((int)message.lucky_number);
     uint8_t buffer[128];
     size_t message_length;
     bool status;
-    SimpleMessage message = SimpleMessage_init_zero;
     
     int count = 0;
     while (1) {
         // ENCODING
-        message.lucky_number = count;
+        SimpleMessage message = SimpleMessage_init_zero;
         pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
+
+        message.lucky_number = count;
+
         status = pb_encode(&pb_out, SimpleMessage_fields, &message);
         message_length = pb_out.bytes_written;
 
         serial_usb.write(buffer, sizeof(buffer));
-
-        /* if(!status) { */
-        /*     serial_usb.print("Encoding failed"); */
-        /* } */
-        // DECODE 
-        /* { */
-        /*     // new buffer */
-        /*     uint8_t buffer_out[128]; */
-        /*     for(int ii=0;ii++;ii<sizeof(buffer)){ */
-        /*         buffer_out[ii] = buffer[ii]; */
-        /*     } */
+        
+        // DECODE
+        {
+            SimpleMessage msg = SimpleMessage_init_zero;
+            pb_istream_t stream = pb_istream_from_buffer(buffer, sizeof(buffer));
+            pb_decode(&stream, SimpleMessage_fields, &msg);
+            /* serial_usb.println(msg.lucky_number); */
+        }
 
         delay(1000);
         count = count +1;

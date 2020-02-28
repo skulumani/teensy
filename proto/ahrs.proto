@@ -23,15 +23,19 @@ message SensorBias {
 /* } */
 
 message IMUMeasurement {
-    SensorMeasurement accel = 1;
-    SensorMeasurement gyro = 2;
-    SensorMeasurement mag = 3;
+    float ax = 1;
+    float ay = 2;
+    float az = 3;
 
-    SensorBias accel_bias = 4;
-    SensorBias gyro_bias = 5;
-    SensorBias mag_bias = 6;
-    
-    float temp  = 7;
-  
-    int32 dt = 8; // Delta Time in microseconds from last measurement
+    float gx = 4;
+    float gy = 5;
+    float gz = 6;
+
+    float mx = 7;
+    float my = 8;
+    float mz = 9;
+
+    float temp  = 10;
+    int32 time = 11; // Delta Time in microseconds from last measurement
+
 }

@@ -35,6 +35,10 @@ namespace AHRS {
             /* void setup_serial( void ); */
             
             void calibrate_mag( void );
+
+            // keep track of time
+            uint32_t current_time = 0;
+
         public:
             // Buffers for IMU Protobuf message
             pb_byte_t imu_buffer[max_message_size];
