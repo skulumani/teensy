@@ -38,7 +38,7 @@ namespace AHRS {
             AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
 
             // encode measurements
-            void setup_serial( void );
+            /* void setup_serial( void ); */
             
             void calibrate_mag( void );
         public:
@@ -49,7 +49,7 @@ namespace AHRS {
             virtual ~IMU( void ) {};
     
             // Send the buffers out over serial
-            void output_serial( void );
+            void output_serial(usb_serial_class& serial_usb);
 
             void calibrate( void );
             

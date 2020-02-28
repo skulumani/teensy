@@ -42,7 +42,7 @@ pb_istream_s as_pb_istream(Stream& s) {
 /* extern "C" int main(void) */
 int main(void) {
     
-    AHRS::IMU imu;
+    /* AHRS::IMU imu; */
     usb_serial_class serial_usb;
     serial_usb.begin(115200);
 
@@ -51,9 +51,10 @@ int main(void) {
     uint8_t buffer[128];
     size_t message_length;
     bool status;
+    SimpleMessage message = SimpleMessage_init_zero;
     
-
-    serial_usb.println("starting");
+    // can no longer print to console when using nanopb - we're sending bytes
+    /* serial_usb.println("starting"); */
     
     // pb_istream_s pb_in = as_pb_istream(Serial);
     // pb_decode(&pb_in, AHRS_IMUMeasurement_fields, &imu_msg)
@@ -61,27 +62,17 @@ int main(void) {
     // loop forever
     int count = 0;
     while (1) {
-        imu.imu.readSensor();
-        /* imu_msg.accel_meas[0] = imu.imu.getAccelX_mss(); */
-        /* imu_msg.accel_meas[1] = imu.imu.getAccelY_mss(); */
-        /* imu_msg.accel_meas[2] = imu.imu.getAccelZ_mss(); */
-        /* pb_ostream_s pb_out = as_pb_ostream(serial_usb); */
-        /* bool status = pb_encode(&pb_out, AHRS_IMUMeasurement_fields, &imu_msg); */
-
-        SimpleMessage message = SimpleMessage_init_zero;
-        message.lucky_number = 28;
+        /* imu.encode(); */
+    
+        // ENCODING
+        message.lucky_number = count;
 
         pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
         status = pb_encode(&pb_out, SimpleMessage_fields, &message);
         message_length = pb_out.bytes_written;
-        
+
         serial_usb.write(buffer, sizeof(buffer));
-        serial_usb.println();
-        if(!status) {
-            serial_usb.print("Encoding failed");
-        }
-        /* serial_usb.println(message_length); */
-        /* serial_usb.println(imu.imu.getAccelX_mss(), 9); */
+
         delay(1000);
         count = count +1;
     }

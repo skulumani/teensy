@@ -29,6 +29,7 @@ int setup_imu(MPU9250& IMU) {
     return status;
 }
 
+/**
 int AHRS::IMU::read_imu( void ) {
     this->imu.readSensor();
     // display the data
@@ -63,6 +64,7 @@ int AHRS::IMU::read_imu( void ) {
 
     return 0;
 }
+**/
 
 int calibrate_imu(MPU9250& IMU) {
     // calibrate gyro
@@ -118,10 +120,10 @@ int calibrate_imu(MPU9250& IMU) {
 namespace AHRS {
 
     IMU::IMU( void ) {
-        this->setup_serial();
+        /* this->setup_serial(); */
     }
     
-
+/**
     void IMU::setup_serial( void ) {
         Serial.begin(115200);
         Serial.println("Starting IMU Serial outputs");
@@ -138,6 +140,7 @@ namespace AHRS {
             while(1) {};
         }
     }
+**/
 
     void IMU::encode( void ) {
         this->imu.readSensor();
@@ -162,28 +165,17 @@ namespace AHRS {
         this->imu_msg.temp_meas = this->imu.getTemperature_C();
 
         // write the message to the buffers
-        if (!pb_encode_ex(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) {
-            Serial.println("Error: IMU encoding error");
+        /* if (!pb_encode_ex(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) { */
+        /*     Serial.println("Error: IMU encoding error"); */
+        /* } */
+    
+        if(!pb_encode(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg)) {
+        // error
         }
-
     }
 
-    void IMU::output_serial( void ) {
-        
-        // get the latest data
-        this->encode();
-    
-        // send over serial
-        /* Serial.write(this->imu_buffer, AHRS_IMUMeasurement_size); */
-
-        // decode here and output over serial
-        {
-            AHRS_IMUMeasurement imu_new = AHRS_IMUMeasurement_init_zero;
-            pb_byte_t imu_buffer_new[max_message_size];
-            pb_istream_t stream = pb_istream_from_buffer(this->imu_buffer, max_message_size);
-            bool status = pb_decode_ex(&stream, AHRS_IMUMeasurement_fields, &imu_new, PB_DECODE_DELIMITED);
-            Serial.println((float)imu_new.accel_meas[0]);
-        }
+    void IMU::output_serial(usb_serial_class& serial_usb ) {
+        serial_usb.write(this->imu_buffer, sizeof(this->imu_buffer)); 
     }
     
     void IMU::calibrate( void ) {
