@@ -9,6 +9,9 @@
 PB_BIND(AHRS_SensorMeasurement, AHRS_SensorMeasurement, AUTO)
 
 
+PB_BIND(AHRS_SensorBias, AHRS_SensorBias, AUTO)
+
+
 PB_BIND(AHRS_IMUMeasurement, AHRS_IMUMeasurement, AUTO)
 
 
