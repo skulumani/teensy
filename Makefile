@@ -175,6 +175,14 @@ clean:
 mpu_example: src/main.cpp
 	@echo Starting....
 	$(info $$OBJS is [${OBJS}])
+
+proto: proto/ahrs.proto
+	./tools/generator-bin/protoc --nanopb_out=. ./proto/ahrs.proto
+	mv proto/ahrs.pb.h ./include
+	mv proto/ahrs.pb.c ./src
+
+.PHONY: proto
+
 # hex, elf, o in reverse order
 # build object files
 # $(CXX) $(CPPFLAGS) $(CPPFLAGS) $(L_INC) -o "$@" -c "$<"
