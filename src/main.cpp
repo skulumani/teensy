@@ -22,7 +22,7 @@ int main(void) {
     while (1) {
         imu.encode();
         imu.send(serial_usb);
-        delay(1000);
+        delay(100);
     }
 }
 
