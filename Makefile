@@ -33,7 +33,8 @@ else
 	ifeq ($(UNAME_S), Darwin)
 		TOOLSPATH = /Applications/Arduino.app/Contents/Java/hardware/tools
 	else 
-		$(error Define Linux path to Arduino)
+		# $(error Define Linux path to Arduino)
+		TOOLSPATH = /home/shankar/Documents/arduino-1.8.10/hardware/tools
 	endif
 endif
 
@@ -194,6 +195,12 @@ clean:
 mpu_example: src/main.cpp
 	@echo Starting....
 	$(info $$OBJS is [${OBJS}])
+
+proto: 
+	$(MAKE) -C proto all
+
+.PHONY: proto
+
 # hex, elf, o in reverse order
 # build object files
 # $(CXX) $(CPPFLAGS) $(CPPFLAGS) $(L_INC) -o "$@" -c "$<"

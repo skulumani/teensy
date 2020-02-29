@@ -7,7 +7,9 @@ int setup_imu(MPU9250& IMU) {
     Serial.begin(115200);
     Serial.println("Starting");
 
-    while(!Serial) {}
+    while(!Serial) {
+        Serial.println("Broken Serial");
+    }
 
     // start communication with IMU 
     status = IMU.begin();
@@ -27,40 +29,41 @@ int setup_imu(MPU9250& IMU) {
     return status;
 }
 
-int read_imu(MPU9250& IMU) {
-    IMU.readSensor();
+int AHRS::IMU::read_imu( void ) {
+    this->imu.readSensor();
     // display the data
-    Serial.print(IMU.getAccelX_mss(),6);
+    Serial.print(this->imu.getAccelX_mss(),6);
     Serial.print("\t");
     
-    Serial.print(IMU.getAccelY_mss(),6);
+    Serial.print(this->imu.getAccelY_mss(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getAccelZ_mss(),6);
+    Serial.print(this->imu.getAccelZ_mss(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getGyroX_rads(),6);
+    Serial.print(this->imu.getGyroX_rads(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getGyroY_rads(),6);
+    Serial.print(this->imu.getGyroY_rads(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getGyroZ_rads(),6);
+    Serial.print(this->imu.getGyroZ_rads(),6);
     Serial.print("\t");
     
-    Serial.print(IMU.getMagX_uT(),6);
+    Serial.print(this->imu.getMagX_uT(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getMagY_uT(),6);
+    Serial.print(this->imu.getMagY_uT(),6);
     Serial.print("\t");
 
-    Serial.print(IMU.getMagZ_uT(),6);
+    Serial.print(this->imu.getMagZ_uT(),6);
     Serial.print("\t");
 
-    Serial.println(IMU.getTemperature_C(),6);
+    Serial.println(this->imu.getTemperature_C(),6);
 
     return 0;
 }
+
 
 int calibrate_imu(MPU9250& IMU) {
     // calibrate gyro
@@ -116,17 +119,7 @@ int calibrate_imu(MPU9250& IMU) {
 namespace AHRS {
 
     IMU::IMU( void ) {
-        this->setup_serial();
-    }
-
-    void IMU::setup_serial( void ) {
-        Serial.begin(115200);
-        Serial.println("Starting IMU Serial outputs");
-
-        while(!Serial) {}
-
         status = this->imu.begin();
-
         if (status < 0) {
             Serial.println("IMU Initialization unsuccessful");
             Serial.println("Check IMU wiring or power cycle");
@@ -134,46 +127,61 @@ namespace AHRS {
             Serial.println(status);
             while(1) {};
         }
-    }
-
-    void IMU::output_serial( void ) {
-
-        this->imu.readSensor();
-
-        // display the data
-        Serial.print(this->imu.getAccelX_mss(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getAccelY_mss(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getAccelZ_mss(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getGyroX_rads(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getGyroY_rads(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getGyroZ_rads(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getMagX_uT(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getMagY_uT(),6);
-        Serial.print("\t");
-
-        Serial.print(this->imu.getMagZ_uT(),6);
-        Serial.print("\t");
-
-        Serial.println(this->imu.getTemperature_C(),6);
-
+        /* this->setup_serial(); */
     }
     
+    void IMU::encode( void ) {
+        // setup nanopb stuff
+        AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
+        imu_msg.has_accel = true;
+        imu_msg.has_gyro = true;
+        imu_msg.has_mag = true;
+        pb_ostream_t imu_stream = pb_ostream_from_buffer(this->imu_buffer, sizeof(this->imu_buffer));
+
+        this->imu.readSensor();
+        
+        imu_msg.time      = micros();
+
+        imu_msg.accel.x = this->imu.getAccelX_mss();
+        imu_msg.accel.y = this->imu.getAccelY_mss();
+        imu_msg.accel.z = this->imu.getAccelZ_mss();
+        
+        imu_msg.gyro.x = this->imu.getGyroX_rads();
+        imu_msg.gyro.y = this->imu.getGyroY_rads();
+        imu_msg.gyro.z = this->imu.getGyroZ_rads();
+        
+        imu_msg.mag.x = this->imu.getMagX_uT();
+        imu_msg.mag.y = this->imu.getMagY_uT();
+        imu_msg.mag.z = this->imu.getMagZ_uT();
+
+        imu_msg.temp = this->imu.getTemperature_C();
+
+        pb_encode(&imu_stream, AHRS_IMUMeasurement_fields, &imu_msg);
+         
+        // write the message to the buffers
+        /**
+          if (!pb_encode_ex(&this->imu_stream, AHRS_IMUMeasurement_fields, &this->imu_msg, PB_ENCODE_DELIMITED)) {
+          Serial.println("Error: IMU encoding error");
+          }
+         **/ 
+
+    }
+
+    /**
+    void IMU::output_serial(usb_serial_class& serial_usb ) {
+        serial_usb.write(this->imu_buffer, sizeof(this->imu_buffer)); 
+    }
+  **/  
+
+    void IMU::send(usb_serial_class& serial_usb) {
+        serial_usb.write(this->imu_buffer, sizeof(this->imu_buffer));
+    }
+
     void IMU::calibrate( void ) {
 
     }
-
+    
+    void IMU::calibrate_mag( void ) {
+        // collect a bunch of mag data and send off board
+    }
 }

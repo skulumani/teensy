@@ -21,8 +21,8 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 Numbers correspond to pin out diagram - NOT location on board
 
 * SCK - Clock pin 13 
-* MOSI - pin 11
-* MISO - pin 12
+* SDA/MOSI - pin 11
+* ADO/MISO - pin 12
 * SS - default is usually pin 10 but you can select any digital IO pin
 
 Connecting to 9250
@@ -168,3 +168,89 @@ https://github.com/xya/teensy-cmake
 * https://teslabs.com/articles/magnetometer-calibration/
 * https://ieeexplore.ieee.org/document/6289882
 * https://www.vectornav.com/docs/default-source/documentation/vn-100-documentation/AN012.pdf?sfvrsn=c99fe6b9_15
+
+## NanoPB/Protocol Buffers
+
+Uses [nanopb](https://jpa.kapsi.fi/nanopb/)
+
+1. Download the latest release
+2. Copy the `generator-bin` directory to `tools`
+3. Use `./tools/generator-bin/protoc --nanopb_out=. simple.proto` to compile the proto message
+4. Copy the new message definition files to `src` or `include`
+5. Update the following files if desired: `pb.h`, `pb_common.h`, `pb_encode.h`, `pb_decode.h`, `pb_common.c`, `pb_encode.c`, `pb_decode.c`
+
+* [Stream Binding](https://github.com/eric-wieser/nanopb-arduino)
+~~~
+
+pb_byte_t buffer[128];
+size_t message_length;
+bool status;
+
+// encode the message
+SimpleMessage message = SimpleMessage_init_zero;
+
+// stream which will write to the buffer
+pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
+
+// fill in message
+message.lucky_number = 13;
+
+// encode message
+status = pb_encode(&stream, SimpleMessage_fields, &message);
+message_length = stream.bytes_written;
+
+if (!status) {
+    Serial.print("Error: ");
+    Serial.println(PB_GET_ERROR(&stream));
+    while(1) {}
+}
+
+// now send message over serial and then decode
+{
+// decode message
+SimpleMessage message = SimpleMessage_init_zero;
+pb_istream_t stream = pb_istream_from_buffer(buffer, message_length);
+status = pb_decode(&stream, SimpleMessage_fields, &message);
+
+if (!status) {
+    Serial.print("Error: ");
+    Serial.println(PB_GET_ERROR(&stream));
+    while(1) {}
+}
+
+Serial.println((int)message.lucky_number);
+}
+~~~
+
+### Sending byte buffer over serial
+
+~~~
+    uint8_t buffer[128];
+    size_t message_length;
+    bool status;
+    
+    int count = 0;
+    while (1) {
+        // ENCODING
+        SimpleMessage message = SimpleMessage_init_zero;
+        pb_ostream_t pb_out = pb_ostream_from_buffer(buffer, sizeof(buffer));
+
+        message.lucky_number = count;
+
+        status = pb_encode(&pb_out, SimpleMessage_fields, &message);
+        message_length = pb_out.bytes_written;
+
+        serial_usb.write(buffer, sizeof(buffer));
+        
+        // DECODE
+        {
+            SimpleMessage msg = SimpleMessage_init_zero;
+            pb_istream_t stream = pb_istream_from_buffer(buffer, sizeof(buffer));
+            pb_decode(&stream, SimpleMessage_fields, &msg);
+            /* serial_usb.println(msg.lucky_number); */
+        }
+
+        delay(1000);
+        count = count +1;
+    }
+~~~
