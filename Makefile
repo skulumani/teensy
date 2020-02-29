@@ -176,10 +176,8 @@ mpu_example: src/main.cpp
 	@echo Starting....
 	$(info $$OBJS is [${OBJS}])
 
-proto: proto/ahrs.proto
-	./tools/generator-bin/protoc --nanopb_out=. ./proto/ahrs.proto
-	mv proto/ahrs.pb.h ./include
-	mv proto/ahrs.pb.c ./src
+proto: 
+	$(MAKE) -C proto all
 
 .PHONY: proto
 

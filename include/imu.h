@@ -22,8 +22,6 @@ int calibrate_imu(MPU9250& IMU);
 //
 int setup_imu(MPU9250 &IMU);
 
-#define max_message_size 128
-
 namespace AHRS {
     class IMU {
         private:
@@ -41,7 +39,7 @@ namespace AHRS {
 
         public:
             // Buffers for IMU Protobuf message
-            pb_byte_t imu_buffer[max_message_size];
+            pb_byte_t imu_buffer[AHRS_IMUMeasurement_size];
 
             IMU( void );
             /* IMU(SPIClass &bus, uint8_t csPin) : MPU9250(bus, csPin) { */
