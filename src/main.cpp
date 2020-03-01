@@ -25,6 +25,7 @@ int main(void) {
 
     // loop forever
     while (1) {
+        imu.update();
         imu.encode(imu_buffer);
         /* imu.send(serial_usb); */
         serial_usb.write(imu_buffer, sizeof(imu_buffer));

@@ -2,6 +2,8 @@
 #define IMU_H
 
 #include "MPU9250.h"
+#include <Eigen.h>
+#include <Eigen/Dense>
 
 #include "ahrs.pb.h"
 #include "pb_common.h"
@@ -27,7 +29,9 @@ namespace AHRS {
             MPU9250 _imu = MPU9250(SPI, 10);
             
             // keep track of time
-            uint32_t current_time = 0;
+            uint32_t _t1 = 0;
+            uint32_t _t2 = 0;
+            float _t_delta = 0;
             
             // IMU parameters
             MPU9250::AccelRange _accel_range = MPU9250::ACCEL_RANGE_16G;
@@ -38,8 +42,9 @@ namespace AHRS {
 
             void calibrate_mag( void );
             void check_status( void );
+            int setup_imu( void );
         public:
-
+            // constructors
             IMU( void );
             
             virtual ~IMU( void ) {};
@@ -49,6 +54,13 @@ namespace AHRS {
             int read_imu( void );
             void encode( uint8_t (&imu_buffer)[AHRS_IMUMeasurement_size]);
             
+            void update( void );
+
+            Eigen::Matrix<float, 3, 1> get_accel( void ) ;
+            Eigen::Matrix<float, 3, 1> get_gyro( void ) ;
+            Eigen::Matrix<float, 3, 1> get_mag( void ) ;
+            float get_temp( void ) ;
+
     };
 }
 #endif

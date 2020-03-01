@@ -28,6 +28,7 @@ int setup_imu(MPU9250& IMU) {
 
     return status;
 }
+
 int calibrate_imu(MPU9250& IMU) {
     // calibrate gyro
     Serial.println("Starting Gyro Calibration");
@@ -108,6 +109,7 @@ namespace AHRS {
     void IMU::check_status( void ) {
         
     }
+
     void IMU::encode( uint8_t (&imu_buffer)[AHRS_IMUMeasurement_size]) {
         // setup nanopb stuff
         AHRS_IMUMeasurement imu_msg = AHRS_IMUMeasurement_init_zero;
@@ -117,9 +119,7 @@ namespace AHRS {
 
         pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, sizeof(imu_buffer));
 
-        _imu.readSensor();
-        
-        imu_msg.time      = micros();
+        imu_msg.t_delta      = _t_delta;
 
         imu_msg.accel.x = _imu.getAccelX_mss();
         imu_msg.accel.y = _imu.getAccelY_mss();
@@ -193,5 +193,19 @@ namespace AHRS {
         Serial.println(_imu.getTemperature_C(),6);
 
         return 0;
+    }
+    
+    void IMU::update( void ) {
+        _imu.readSensor();
+        _t2 = micros();
+        _t_delta = (float)(_t2-_t1)/1.0e6;
+        _t1 = _t2;
+    }
+
+    Eigen::Matrix<float, 3, 1> IMU::get_accel( void ) {
+        Eigen::Matrix<float, 3, 1> accel(_imu.getAccelX_mss() ,
+                                         _imu.getAccelY_mss(),
+                                         _imu.getAccelZ_mss());
+        return accel;
     }
 }
