@@ -3,14 +3,7 @@
 #include "Arduino.h"
 
 #include "imu.h"
-#include "eigen_teensy.h"
-
 #include "utility.h"
-
-#include "simple.pb.h"
-
-#include "pb_decode.h"
-#include "pb_encode.h"
 
 /* extern "C" int main(void) */
 int main(void) {

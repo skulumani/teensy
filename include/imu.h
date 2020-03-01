@@ -2,8 +2,7 @@
 #define IMU_H
 
 #include "MPU9250.h"
-#include <Eigen.h>
-#include <Eigen/Dense>
+#include "eigen_teensy.h"
 
 #include "ahrs.pb.h"
 #include "pb_common.h"
@@ -41,7 +40,7 @@ namespace AHRS {
             bool _enable_interrupt = true;
 
             void calibrate_mag( void );
-            void check_status( void );
+            void check_status( int status_flag, String error_string);
             int setup_imu( void );
         public:
             // constructors

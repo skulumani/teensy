@@ -82,31 +82,38 @@ int calibrate_imu(MPU9250& IMU) {
 namespace AHRS {
 
     IMU::IMU( void ) {
-        _imu_status = _imu.begin();
-        if (_imu_status < 0) {
-            Serial.println("IMU Initialization unsuccessful");
-            Serial.println("Check IMU wiring or power cycle");
-            Serial.print("Status: ");
-            Serial.println(_imu_status);
-            while(1) {
-                Serial.println("Broken IMU"); 
-                delay(2000);
-            };
-        }
+        setup_imu();
+    }
+    
+    int IMU::setup_imu( void ) {
+        check_status(_imu.begin(), "imu.begin() error");
 
-        _imu_status = _imu.setAccelRange(_accel_range);
-        _imu_status = _imu.setGyroRange(_gyro_range);
-        _imu_status = _imu.setDlpfBandwidth(_bandwidth);
-        _imu_status = _imu.setSrd(_sample_rate_divider);
+        check_status(_imu.setAccelRange(_accel_range), "imu.setAccelRange() error");
+        check_status(_imu.setGyroRange(_gyro_range), "imu.setGyroRange() error");
+        check_status( _imu.setDlpfBandwidth(_bandwidth), "imu.setDlpfBandwidth() error");
+        check_status(_imu.setSrd(_sample_rate_divider), "imu.setSrd() error");
 
         if(_enable_interrupt) {
-            _imu_status = _imu.enableDataReadyInterrupt();
+            check_status(_imu.enableDataReadyInterrupt(), "imu.enableDataReadyInterrupt() error");
         } else {
-            _imu_status = _imu.disableDataReadyInterrupt();
+            check_status(_imu.disableDataReadyInterrupt(), "imu.disableDataReadyInterrupt() error");
         }
+        
     }
-   
-    void IMU::check_status( void ) {
+
+    void IMU::check_status( int status_flag, String error_string ) {
+        if (status_flag < 0) {
+            Serial.println("Bad IMU Status");
+            Serial.println("Check IMU wiring or power cycle");
+            Serial.print("Status: ");
+            Serial.println(status_flag);
+            while(1) {
+                Serial.println(error_string); 
+                delay(2000);
+            };
+        } else {
+            _imu_status = status_flag;
+        }
         
     }
 
@@ -204,8 +211,26 @@ namespace AHRS {
 
     Eigen::Matrix<float, 3, 1> IMU::get_accel( void ) {
         Eigen::Matrix<float, 3, 1> accel(_imu.getAccelX_mss() ,
-                                         _imu.getAccelY_mss(),
-                                         _imu.getAccelZ_mss());
+                _imu.getAccelY_mss(),
+                _imu.getAccelZ_mss());
         return accel;
+    }
+
+    Eigen::Matrix<float, 3, 1> IMU::get_gyro( void ) {
+        Eigen::Matrix<float, 3, 1> gyro(_imu.getGyroX_rads() ,
+                _imu.getGyroY_rads(),
+                _imu.getGyroZ_rads());
+        return gyro;
+    }
+
+    Eigen::Matrix<float, 3, 1> IMU::get_mag( void ) {
+        Eigen::Matrix<float, 3, 1> mag(_imu.getMagX_uT() ,
+                _imu.getMagY_uT(),
+                _imu.getMagZ_uT());
+        return mag;
+    }
+
+    float IMU::get_temp( void ) {
+        return _imu.getTemperature_C();
     }
 }
