@@ -1,6 +1,6 @@
 # The name of your project (used to name the compiled .hex file)
 # TARGET = $(notdir $(CURDIR))
-TARGET = blink_official
+TARGET = teensy_client
 
 # The teensy version to use, 30, 31, 35, 36, or LC
 TEENSY = 35
