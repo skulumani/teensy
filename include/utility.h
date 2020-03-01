@@ -1,5 +1,6 @@
 #ifndef UTILITY_H
 #define UTILITY_H
+
 #include "WProgram.h"
 #include "Arduino.h"
 #include <Print.h>

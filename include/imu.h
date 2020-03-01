@@ -1,8 +1,6 @@
 #ifndef IMU_H
 #define IMU_H
 
-#include "WProgram.h"
-#include "Arduino.h"
 #include "MPU9250.h"
 
 #include "ahrs.pb.h"
@@ -15,49 +13,42 @@ int read_imu(MPU9250& IMU);
 
 int calibrate_imu(MPU9250& IMU);
 
-// TODO Build wrapper class for the IMU
+// TODO 
 // Seems X,Y axis are flipped for Chip wrt Board
 // Verify that other sensors output into same frame (rotate to match the board)
-//
-//
 int setup_imu(MPU9250 &IMU);
 
 namespace AHRS {
     class IMU {
         private:
-            int status;
+            int _imu_status;
+
             /* MPU9250 imu = MPU9250(Wire, 0x68); */
-             
-
-            // encode measurements
-            /* void setup_serial( void ); */
+            MPU9250 _imu = MPU9250(SPI, 10);
             
-            void calibrate_mag( void );
-
             // keep track of time
             uint32_t current_time = 0;
+            
+            // IMU parameters
+            MPU9250::AccelRange _accel_range = MPU9250::ACCEL_RANGE_16G;
+            MPU9250::GyroRange _gyro_range = MPU9250::GYRO_RANGE_2000DPS;
+            MPU9250::DlpfBandwidth _bandwidth = MPU9250::DLPF_BANDWIDTH_184HZ;
+            uint8_t _sample_rate_divider = 0; // TODO Create an enum to set SRD/DLPF for a few common sample rates
+            bool _enable_interrupt = true;
 
+            void calibrate_mag( void );
+            void check_status( void );
         public:
-            // Buffers for IMU Protobuf message
-            pb_byte_t imu_buffer[AHRS_IMUMeasurement_size];
 
             IMU( void );
-            /* IMU(SPIClass &bus, uint8_t csPin) : MPU9250(bus, csPin) { */
-            /* setup_serial(); */
-            /* }; */
+            
             virtual ~IMU( void ) {};
     
-            // Send the buffers out over serial
-            /* void output_serial(usb_serial_class& serial_usb); */
-
             void calibrate( void );
             
             int read_imu( void );
-            void encode( void );
+            void encode( uint8_t (&imu_buffer)[AHRS_IMUMeasurement_size]);
             
-            void send(usb_serial_class& serial_usb);
-
-            MPU9250 imu = MPU9250(SPI, 10);
     };
 }
 #endif
