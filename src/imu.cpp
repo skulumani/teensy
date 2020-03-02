@@ -85,6 +85,11 @@ namespace AHRS {
         setup_imu();
     }
     
+    IMU::IMU( bool enable_interrupt) {
+        _enable_interrupt = enable_interrupt;
+        setup_imu();
+    }
+
     int IMU::setup_imu( void ) {
         check_status(_imu.begin(), "imu.begin() error");
 

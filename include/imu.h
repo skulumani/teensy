@@ -45,7 +45,8 @@ namespace AHRS {
         public:
             // constructors
             IMU( void );
-            
+            IMU( bool enable_interrupt);
+
             virtual ~IMU( void ) {};
     
             void calibrate( void );
