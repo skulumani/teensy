@@ -10,12 +10,14 @@ Instructions are here for both using the Arduino IDE or make and the AVR toolcha
 * ~~* Get teensy core code as a submodule~~
 * Use makefile example to build simple setup script and use teensy_loader_cli to push to board
 * [x] Get MPU9250 library installed and working
-* [ ] Fix MPU9250.h to initialize the bias/scale factor variables (around line 169)
+* [x] Fix MPU9250.h to initialize the bias/scale factor variables (around line 169)
 * [ ] Calibrate IMU 
 * [ ] Create IMU wrapper class to interface with MPU9250 and rotate outputs to match breakboard diagram
-* [ ] Test code to read at 1000Hz
+* [x] Test code to read at 1000Hz
 * [ ] AHRS
-
+* [ ] Read/write to SD card
+* [ ] Multiple timers/interrupts, IMU data, filter update, output update. Use state machine and track time differences for each to run at a different rate
+*
 ## SPI Wiring for MPU 9250
 
 Numbers correspond to pin out diagram - NOT location on board
