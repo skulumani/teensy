@@ -131,7 +131,8 @@ namespace AHRS {
 
         pb_ostream_t imu_stream = pb_ostream_from_buffer(imu_buffer, sizeof(imu_buffer));
 
-        imu_msg.t_delta      = _t_delta;
+        /* imu_msg.time      = _t_delta; */
+        imu_msg.time = (float) micros()/1.0e6;
 
         imu_msg.accel.x = _imu.getAccelX_mss();
         imu_msg.accel.y = _imu.getAccelY_mss();
