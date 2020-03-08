@@ -15,7 +15,7 @@ message SensorBias {
 }
 
 message IMUMeasurement {
-    float t_delta = 1; // Delta Time in microseconds from last measurement
+    float time_usec = 1; // Delta Time in microseconds from last measurement
 
     SensorMeasurement accel = 2;
     SensorMeasurement gyro = 3;
