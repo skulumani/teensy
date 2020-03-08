@@ -27,7 +27,7 @@ typedef struct _AHRS_SensorMeasurement {
 } AHRS_SensorMeasurement;
 
 typedef struct _AHRS_IMUMeasurement {
-    float t_delta;
+    float time;
     bool has_accel;
     AHRS_SensorMeasurement accel;
     bool has_gyro;
@@ -53,7 +53,7 @@ typedef struct _AHRS_IMUMeasurement {
 #define AHRS_SensorMeasurement_x_tag             1
 #define AHRS_SensorMeasurement_y_tag             2
 #define AHRS_SensorMeasurement_z_tag             3
-#define AHRS_IMUMeasurement_t_delta_tag          1
+#define AHRS_IMUMeasurement_time_tag             1
 #define AHRS_IMUMeasurement_accel_tag            2
 #define AHRS_IMUMeasurement_gyro_tag             3
 #define AHRS_IMUMeasurement_mag_tag              4
@@ -75,7 +75,7 @@ X(a, STATIC,   SINGULAR, FLOAT,    z,                 3)
 #define AHRS_SensorBias_DEFAULT NULL
 
 #define AHRS_IMUMeasurement_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, FLOAT,    t_delta,           1) \
+X(a, STATIC,   SINGULAR, FLOAT,    time,              1) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  accel,             2) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  gyro,              3) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  mag,               4) \
